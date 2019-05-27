@@ -27,6 +27,10 @@ public class GetSetExampleServlet extends HttpServlet {
 	
 	/**
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
+	 * 
+	 * Puts a string variable into 3 different scopes -- request, session and context (application).
+	 * After that user will be forwarded to index.jsp -file which'll display these.
+	 * 
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setAttribute("mySecretMessage", "I'm a request geek!");

@@ -1,0 +1,23 @@
+========================
+ Java EE:n Servlet Scopet
+========================
+
+1. Request
+
+Tämän skopen tarkoitus on varastoida dataa request-objektin olemassaolon ajaksi. 
+Toisinsanoen tämä scope on voimassa siitä asti kun selain lähettää pyynnön, loppuen 
+siihen kun selaimelle lähetetään vastaus takaisin. Tätä skopea käytetään siis silloin kun haluat 
+lähettää informaatio servletille, joka voidaan poistaa heti kun request on ohi.
+
+2. Session
+
+Tämä skope varastoi dataa sen aikaa kun käyttäjä on yhteydessä meihin. Sessiot myös itsessään
+tallentavat dataa, ja ne ovat voimassa niin kauan aikaa kun käyttäjä on yhteydessä meihin. 
+Tätä skopea käytetään silloin kun haluat säilyttää käyttäjään liittyvää dataa kauemmin kun yhden requestin ajaksi.
+
+3. Application
+
+Tätä skopea käytetään spesifiin varastointiin, joka tallentaa informaatiota koko applikaation 
+elinkaaren ajaksi. Informaatio on sama kaikille eli jokainen pyyntö (request) ja sessio voi nähdä 
+tai muokata dataa. Tätä käytetään vain silloin kun tieto on järkevää koko sovellukselle.
+  
