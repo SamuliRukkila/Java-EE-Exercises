@@ -40,17 +40,20 @@ public class LaskePalkkaServletC extends HttpServlet {
 			tax = Double.parseDouble(taxReq);
 			success = true;
 		} catch (NullPointerException npe) {
+			request.setAttribute("error", "Virhe. Täytitkö kaikki kohdat?");
 		} catch (Exception e) {
+			request.setAttribute("error", "Virhe palkkaa laskiessa");
 		}
 		
 		// If convert was successful
 		if (success) {
 			double salary = salaryByHour * hours;
 			double grossSalary = salary / (100 / (100 - tax));
+			// Set salary-variables to request attributes which'll be returned back
 			request.setAttribute("salary", salary);
 			request.setAttribute("grossSalary", grossSalary);
 		}
-		
+		// RequestDispacther -object -> can be used to send data back to JSP
 		RequestDispatcher rd = getServletConfig().getServletContext()
 				.getRequestDispatcher("/palkkalomake-C.jsp");
 		rd.forward(request, response);

@@ -18,9 +18,13 @@
 			<p><input type="submit" value="Laske palkka"></p>
 		</form>
 		<%
-			if (request.getAttribute("salary") != null) {
-				request.setCharacterEncoding("UTF-8");
-				
+			request.setCharacterEncoding("UTF-8");
+			// If there were error while calculating payment
+			if (request.getAttribute("error") != null) {
+				out.println(request.getAttribute("error"));
+			}	
+			// If both salary and gross-salary were returned
+			else if (request.getAttribute("salary") != null && request.getAttribute("grossSalary") != null) {		
 				out.println("<h3>Bruttopalkka:</h3>");
 				out.println(request.getAttribute("salary") + " €");
 				out.println("<h3>Nettopalkka:</h3>");
