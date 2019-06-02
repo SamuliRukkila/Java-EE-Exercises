@@ -29,6 +29,8 @@
 				out.println(request.getAttribute("salary") + " €");
 				out.println("<h3>Nettopalkka:</h3>");
 				out.println(request.getAttribute("grossSalary") + " €");
+			} else {
+				out.println("Palkkasi tulee tähän näkyviin");
 			}
 		%>
 	</body>
