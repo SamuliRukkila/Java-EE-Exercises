@@ -5,4 +5,4 @@ Official course description [HERE](https://asio.jamk.fi/pls/asio/asio_ectskuv1.k
 
 ## Exercises
 
-All the exercises are distruped to 4 segments (part {1..4}).
+All the exercises are distruped to 4 different segments (part-1, part-2 etc.). All of these segments will contain a brief documentation on the exercises.
