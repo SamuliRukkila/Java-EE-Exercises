@@ -13,3 +13,7 @@ The assignment is distruped into 3 parts.
 ### #3 The basics of Java Bean
 
 An assignment where we'll create a simple Bean, ```UserBean```, which'll be used to save data formatted via a HTML-form.
+
+### #4 Dice-throwing with class + JSTL
+
+An assignment where we'll create a dice-throwing page using external class and JSTL-library. 
