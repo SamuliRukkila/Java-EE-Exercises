@@ -17,3 +17,9 @@ An assignment where we'll create a simple Bean, ```UserBean```, which'll be used
 ### #4 Dice-throwing with class + JSTL
 
 An assignment where we'll create a dice-throwing page using external class and JSTL-library. 
+
+### #5.
+
+### #6.
+
+### #7.
