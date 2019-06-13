@@ -18,7 +18,7 @@ An assignment where we'll create a simple Bean, ```UserBean```, which'll be used
 
 An assignment where we'll create a dice-throwing page using external class and JSTL-library. 
 
-### #5. JDBC-MySQL GET, POST & PUT
+### #5. JDBC-MySQL: GET, POST & PUT
 
 An assignment where we'll modify a ready-made MVC-application to include a PUT-request. This will allow us to update user's credentials. 
 
