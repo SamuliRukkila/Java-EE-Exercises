@@ -2,7 +2,7 @@
 
 ### #1 Servlet + JSP -tutorial
 
-An assingment where we get to know the basics of JSP and servlet. We are also introduced into servlet scopes available.
+An assignment where we get to know the basics of JSP and servlet. We are also introduced into servlet scopes available.
 We'll also use basic methods for servlets: ```doPost```, ```doGet``` & ```service```
 
 ### #2 Count your normal- and gross-payment with JSP + Servlet 
@@ -18,7 +18,9 @@ An assignment where we'll create a simple Bean, ```UserBean```, which'll be used
 
 An assignment where we'll create a dice-throwing page using external class and JSTL-library. 
 
-### #5.
+### #5. JDBC-MySQL GET, POST & PUT
+
+An assignment where we'll modify a ready-made MVC-application to include a PUT-request. This will allow us to update user's credentials. 
 
 ### #6.
 
