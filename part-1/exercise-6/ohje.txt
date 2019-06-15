@@ -1,0 +1,19 @@
+﻿ASIAKASREKISTERI
+
+"Old School" -tyylinen osittain valmis Java Web -asiakasrekisteri CRUD-sovellus 
+joka on toteutettu JSP-sivuilla ja servleteillä sekä perinteisellä JDBC-tietokantayhteydellä.
+Kirjautuminen toteutetaan perinteisesti sessiolla.
+
+asiakkaat.sql -tiedostossa ovat asiakkaat -taulun ja yhden asiakkaan luontikomennot. 
+Tee kanta nimeltään jeedb1 ja laita sinne asiakkaat-taulu sisältöineen. Muista hakea
+sovelluspalvelimen lib-kansioon MySQL-ajuri. Voit kirjautua sisään sovellukseen asiakkaan 
+emaililla ja salasanalla.
+
+Tietokantapohjaisia sovelluksia ei tehdä nykyään JEE:llä tähän tyyliin enää juuri koskaan. 
+Yleensä kaytetään apuna sovelluskehyksiä, joiden avulla tämäntyyppinen sovellus 
+voidaan tehdä helpommin, nopeammin ja varustettuna responsiivisella SPA-käyttöliittymällä. 
+
+Sovellus on kuitenkin hyvä esimerkki Servlettien, JSP-sivujen ja JavaBeanien perustoiminnasta, 
+mikä on hyvä ymmärtää sillä niitä käytetään edelleen monissa JEE -sovelluskehyksissä.
+
+    
