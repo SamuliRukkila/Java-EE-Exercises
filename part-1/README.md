@@ -22,6 +22,8 @@ An assignment where we'll create a dice-throwing page using external class and J
 
 An assignment where we'll modify a ready-made MVC-application to include a PUT-request. This will allow us to update user's credentials. 
 
-### #6.
+### #6. CustomerRegistration -application
+
+An assignment where we'll modify almost-ready-made application where you can perform CRUD-actions for customers. For this application we'll add search and modify -actions.
 
 ### #7.
