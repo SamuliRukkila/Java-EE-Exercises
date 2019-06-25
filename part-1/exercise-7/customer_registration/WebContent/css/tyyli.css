@@ -1,0 +1,129 @@
+body {
+    margin-left: 130px;
+    margin-top: 20px;
+    margin-right: 50px;
+    margin-bottom: 100px;
+    font-family: verdana, arial, serif;
+    font-size: 10pt;
+    font-weight: normal;
+    background-repeat: repeat-y;
+    background-color: #FFFFFF;
+    color: #000000;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    padding: 5px;
+    border: solid 1px silver;
+}
+
+th {
+    background: transparent none;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+td {
+    background: transparent none;
+    font-size: 10pt;
+    font-weight: normal;
+}
+
+a {
+    background: transparent none;
+    color: navy;
+}
+
+a:Hover {
+    background: transparent none;
+    text-decoration: none;
+}
+
+h1 {
+    background: transparent none;
+    font-family: verdana, arial, serif;
+    font-size: 18pt;
+    font-weight: bold;
+}
+
+h2 {
+    background: transparent none;
+    font-family: verdana, arial, serif;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+h3 {
+    background: transparent none;
+    font-family: verdana, arial, serif;
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+
+span.bold {
+    background: transparent none;
+    font-family: verdana, arial, serif;
+    font-size: 10pt;
+    font-weight: bold;
+}
+
+
+th {
+background: transparent none;
+font-size: 10pt;
+font-weight: bold;
+}
+
+
+td {
+background: transparent none;
+font-size: 10pt;
+font-weight: normal;
+}
+
+a {
+background: transparent none;
+color: navy;
+}
+
+a:Hover {
+background: transparent none;
+text-decoration: none;
+}
+
+h1 {
+background: transparent none;
+font-family: verdana, arial, serif;
+font-size: 18pt;
+font-weight: bold;
+}
+
+h2 {
+background: transparent none;
+font-family: verdana, arial, serif;
+font-size: 14pt;
+font-weight: bold;
+}
+
+h3 {
+background: transparent none;
+font-family: verdana, arial, serif;
+font-size: 12pt;
+font-weight: bold;
+}
+
+
+span.bold
+{
+background: transparent none;
+font-family: verdana, arial, serif;
+font-size: 10pt;
+font-weight: bold;
+}
+
+   

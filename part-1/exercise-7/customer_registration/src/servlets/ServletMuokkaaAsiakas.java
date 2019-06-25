@@ -46,7 +46,6 @@ public class ServletMuokkaaAsiakas extends HttpServlet {
     }
     
     response.setContentType("text/html;UTF-8");
-    response.setCharacterEncoding("UTF-8");
     request.setCharacterEncoding("UTF-8");
     
     PrintWriter out = response.getWriter();

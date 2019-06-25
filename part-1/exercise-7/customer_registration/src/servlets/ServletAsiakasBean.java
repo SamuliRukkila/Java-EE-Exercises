@@ -89,7 +89,6 @@ public class ServletAsiakasBean extends HttpServlet {
 		
 		String id = request.getParameter("id");
 		response.setContentType("text/html;charset=UTF-8");
-		response.setCharacterEncoding("UTF-8");
 		
 		try {
 		  Statement stmt = conn.createStatement();
@@ -114,7 +113,6 @@ public class ServletAsiakasBean extends HttpServlet {
         papu.setSalasana(null);
 		  }
 		  
-		  request.setCharacterEncoding("UTF-8");
 		  request.setAttribute("asiakas", papu);
 		  RequestDispatcher rd = getServletConfig().getServletContext()
 		      .getRequestDispatcher("/muokkaa.jsp");
