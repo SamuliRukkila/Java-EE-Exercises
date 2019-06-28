@@ -45,8 +45,8 @@ public class ConnectionPoolTestServlet extends HttpServlet {
           * nimiseen resurssiin joka on yhdistetty connection pooliin. 
           */ 
           Context ctx = new InitialContext();
-	  DataSource ds = (DataSource) ctx.lookup("jdbc/sample");
-	  conn = ds.getConnection();         
+      	  DataSource ds = (DataSource) ctx.lookup("jdbc/sample");
+      	  conn = ds.getConnection();         
                  
         }   
          catch (Exception ex) {} 

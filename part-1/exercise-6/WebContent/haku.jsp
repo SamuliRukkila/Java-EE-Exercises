@@ -26,38 +26,40 @@
 		</c:if>
 		
 		<c:if test="${requestScope.list.size() > 0}">
-			<table>
-				<tr>
-					<th>&nbsp;</th>
-					<th>id</th>
-					<th>Nimi</th>
-					<th>Osoite</th>
-					<th>Puhelin</th>
-					<th>Email</th>
-					<th>Salasana</th>
-				</tr>
-				<c:forEach items="${requestScope.list}" var="item">
+			<form name="muokkaaAsiakas" method="post" action="ServletAsiakasBean">
+				<table>
 					<tr>
-						<td align="center"><input type="checkbox" name="id"
-							value="${item.id}"></td>
-						<td><c:out value="${item.id}" /></td>
-						<td><c:out value="${item.nimi}" /></td>
-						<td><c:out value="${item.osoite}" /></td>
-						<td><c:out value="${item.puhelin}" /></td>
-						<td><c:out value="${item.email}" /></td>
-						<td><c:out value="${item.salasana}" /></td>
+						<th>&nbsp;</th>
+						<th>id</th>
+						<th>Nimi</th>
+						<th>Osoite</th>
+						<th>Puhelin</th>
+						<th>Email</th>
+						<th>Salasana</th>
 					</tr>
-				</c:forEach>
-				<tr>
-					<td><input type="submit" name="submit" value="Muokkaa"></td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-					<td>&nbsp;</td>
-				</tr>
-			</table>
+					<c:forEach items="${requestScope.list}" var="item">
+						<tr>
+							<td align="center"><input type="checkbox" name="id"
+								value="${item.id}"></td>
+							<td><c:out value="${item.id}" /></td>
+							<td><c:out value="${item.nimi}" /></td>
+							<td><c:out value="${item.osoite}" /></td>
+							<td><c:out value="${item.puhelin}" /></td>
+							<td><c:out value="${item.email}" /></td>
+							<td><c:out value="${item.salasana}" /></td>
+						</tr>
+					</c:forEach>
+					<tr>
+						<td><input type="submit" name="submit" value="Muokkaa"></td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>
+				</table>
+			</form>
 		</c:if>
 	
 	</body>

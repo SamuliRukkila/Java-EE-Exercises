@@ -105,6 +105,7 @@ public class ServletHaeTietoja extends HttpServlet {
 	    out.println(e);
 	  }
 	  
+    request.setCharacterEncoding("UTF-8");
 	  request.setAttribute("list", CustomerList);
 	  request.setAttribute("hakusana", word);
 	  request.setAttribute("hakuvalinta", choice);

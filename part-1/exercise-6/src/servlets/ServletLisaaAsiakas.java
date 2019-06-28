@@ -51,7 +51,7 @@ public class ServletLisaaAsiakas extends HttpServlet {
 			response.sendRedirect("login.html");
 			return;
 		}
-
+		
 		response.setContentType("text/html;UTF-8");
 		PrintWriter out = response.getWriter();
 		request.setCharacterEncoding("UTF-8"); // Varmistetaan että ääkköset toimivat

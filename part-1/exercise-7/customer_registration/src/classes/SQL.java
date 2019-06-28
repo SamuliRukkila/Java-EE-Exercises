@@ -7,76 +7,39 @@ package classes;
  * Ei tarvitse (eikä voi) luoda oliota.
  *
  */
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-//Seuraavat tarvitaan jos luetaan tunnarit ulkoisesta tiedostosta
-//import java.io.*;
-//import java.util.ArrayList;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.sql.DataSource;
+
+import com.mysql.jdbc.PreparedStatement;
 
 public class SQL {
 
 	private static Connection conn = null;
-
-	// Kommenteissa esitetty tietokannan tunnareiden haku ulkoisesta tiedostosta.
-	// Tunnarit voitaisiin lukea myös Servletin kontekstimuuttujista
-	// tiedosto josta tietokannan tunnarit luetaan
-	// private static String source = "/opt/tunnarit/tunnarit.txt";
-	// //C://temp//tunnarit.txt
-	/*
-	 * tunnarit.txt, kolme riviä:
-	 * 
-	 * jdbc:mysql://localhost/osoitteet root elvis
-	 */
-
-	// Metodi jolla luetaan webbiin näkymättömästä tiedostosta rivit muuttujiin
-	/*
-	 * public static String readLineFile(String source, int line) throws Exception {
-	 * FileReader in; LineNumberReader lnr; String s ="";
-	 * 
-	 * int num; in = new FileReader(source);
-	 * 
-	 * lnr = new LineNumberReader(in);
-	 * 
-	 * for(int i=0; i<line;i++) s=lnr.readLine();
-	 * 
-	 * in.close(); lnr.close(); return s; }
-	 */
+	
 
 	// avaa yhteyden tietokantaan
 	public static Connection openConnection() {
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-
-		} catch (ClassNotFoundException cnfe) {
-			System.out.println(cnfe);
-		}
-		conn = null;
-
-		// jos otetaan tunnarit tiedostosta
-		/*
-		 * String url = readLineFile(source, 1); String tunnari = readLineFile(source,
-		 * 2); String salasana = readLineFile(source, 3);
-		 */
-		// tietokannan osoite ja nimi
-		String url = "jdbc:mysql://localhost/jeedb1";
-
-		try {
-			/*
-			 * Otetaan yhteys. Normaalisti rootin tunnareita ei saa tietenkään käyttää
-			 * Tunnareita ei saisi myöskään kovakoodata koodiin, vaan ne pitäisi hakea
-			 * ulkopuolisesta tiedostosta kts. kommentoitu koodi ylempänä
-			 */
-			conn = DriverManager.getConnection(url, "root", "root");
-			// conn = DriverManager.getConnection(url, tunnari, salasana);
-		} catch (SQLException e) {
-			System.out.println(e);
-		}
-		// palautetaan avattu yhteys
-		return conn;
+	  try {
+	    Context ctx = new InitialContext();
+	    DataSource ds = (DataSource) ctx.lookup("jdbc/sample");
+	    conn = ds.getConnection();
+	  } catch (Exception ex) {
+	    System.out.println("Yhteyttä ei saatu: " + ex);
+	  }
+	  return conn;
 	}
 
 	// sulkee yhteyden
@@ -97,7 +60,7 @@ public class SQL {
 	// luo yhteydesta PreparedStatement olion tietyn SQL-lauseen mukaisesti
 	public static PreparedStatement createPreStmt(Connection conn, String sql) {
 		try {
-			return conn.prepareStatement(sql);
+			return (PreparedStatement) conn.prepareStatement(sql);
 		} catch (SQLException e) {
 			System.out.println(e);
 		}

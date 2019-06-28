@@ -4,7 +4,6 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
 		<title>Muokkaa asiakasta</title>
 		<link rel="stylesheet" href="css/tyyli.css">
 	</head>

@@ -45,10 +45,12 @@ public class ServletMuokkaaAsiakas extends HttpServlet {
       return;
     }
     
+    request.setCharacterEncoding("UTF-8");
     response.setContentType("text/html;UTF-8");
     response.setCharacterEncoding("UTF-8");
-    request.setCharacterEncoding("UTF-8");
     
+    System.out.println(request.getCharacterEncoding());
+    System.out.println(request.getParameter("nimi"));
     PrintWriter out = response.getWriter();
     
     String id = request.getParameter("id");
