@@ -18,6 +18,7 @@ public class PersonBean implements Serializable {
 	
 	
 	// Getters for all the attributes
+	// Returns wanted attribute by calling method name
 	public String getName() {
 		return name;
 	}
@@ -32,6 +33,7 @@ public class PersonBean implements Serializable {
 	}
 	
 	// Setters for all the attributes
+	// Changes wanted attribute's value by method name
 	public void setName(String pName) {
 	  this.name = pName;
 	}

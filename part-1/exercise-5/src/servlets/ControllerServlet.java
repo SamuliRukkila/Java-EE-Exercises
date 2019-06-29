@@ -32,13 +32,13 @@ public class ControllerServlet extends HttpServlet {
     session.setAttribute("avain", "arvo");// Turha homma, mutta tehdään jotta ei tule huomautusta
     System.out.println(request.getParameter("modify"));
     
+    // According to parameters, user's submit will be forwarded to corresponding servlet
     RequestDispatcher rd = request.getParameter("updateValues") != null ? 
-        request.getRequestDispatcher("/UpdateCustomerServlet") :
-        request.getRequestDispatcher("/DispatcherServlet");
+      request.getRequestDispatcher("/UpdateCustomerServlet") :
+      request.getRequestDispatcher("/DispatcherServlet");
     rd.include(request, response);
 
     // Kontrolli palaa tähän kun DispatcherServlet on tehnyt työnsä.
-
     if (request.getParameter("submit") != null || request.getParameter("updateValues") != null) {
       request.getRequestDispatcher("result.jsp").forward(request, response);
     } else {

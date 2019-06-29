@@ -30,15 +30,19 @@ public class SQL {
 	private static Connection conn = null;
 	
 
-	// avaa yhteyden tietokantaan
+	// Connect to Payara's Connection Pool
 	public static Connection openConnection() {
 	  try {
+	    // Create new Context-object
 	    Context ctx = new InitialContext();
+	    // Search for datasource with ctx-object
 	    DataSource ds = (DataSource) ctx.lookup("jdbc/sample");
+	    // After datasource is found, place connection-object into conn-variable
 	    conn = ds.getConnection();
 	  } catch (Exception ex) {
 	    System.out.println("Yhteyttä ei saatu: " + ex);
 	  }
+	  // Return conn -variable back to the caller
 	  return conn;
 	}
 

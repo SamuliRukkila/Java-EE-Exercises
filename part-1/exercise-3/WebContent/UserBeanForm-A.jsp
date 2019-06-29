@@ -33,9 +33,11 @@
     <!-- After form is successfully sent, values will be distruped to these
     tags (according to their names) -->
     <h3>Syöttämäsi tiedot:</h3>
-	  <p><jsp:getProperty name="user" property="name"/></p>
-	  <p><jsp:getProperty name="user" property="address"/></p>
-	  <p><jsp:getProperty name="user" property="city"/></p>
-	  <p><jsp:getProperty name="user" property="email"/></p>
+    <% if (user.getName() != null) { %>
+		  <p><jsp:getProperty name="user" property="name"/></p>
+		  <p><jsp:getProperty name="user" property="address"/></p>
+		  <p><jsp:getProperty name="user" property="city"/></p>
+		  <p><jsp:getProperty name="user" property="email"/></p>
+	  <% } %>
   </body>
 </html>

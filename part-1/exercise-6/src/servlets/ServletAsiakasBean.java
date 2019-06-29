@@ -87,15 +87,20 @@ public class ServletAsiakasBean extends HttpServlet {
 		
 		PrintWriter out = response.getWriter();
 		
+		// Take customer's ID from request
 		String id = request.getParameter("id");
+		// Convert reponse into UTF-8
 		response.setContentType("text/html;charset=UTF-8");
 		response.setCharacterEncoding("UTF-8");
 		
 		try {
+		  // Create statement object from conn -variable
 		  Statement stmt = conn.createStatement();
+		  // Place results into rs -variable from SQL-query
 		  ResultSet rs = stmt.executeQuery(
 		      "SELECT * FROM asiakkaat where id=" + id
 		  );
+		  // Loop through result(s)
 		  if (rs.next()) {
 		    do {
 		      papu.setId(rs.getString("id"));
@@ -106,6 +111,7 @@ public class ServletAsiakasBean extends HttpServlet {
 		      papu.setSalasana(rs.getString("salasana"));
 		    } while (rs.next());
 		  } else {
+		    // If no customer were found with selected ID
         papu.setId(null);
         papu.setNimi(null);
         papu.setOsoite(null);
@@ -115,7 +121,11 @@ public class ServletAsiakasBean extends HttpServlet {
 		  }
 		  
 		  request.setCharacterEncoding("UTF-8");
+		  // Put the created bean into attribute which'll be send to
+		  // customize -page
 		  request.setAttribute("asiakas", papu);
+		  
+		  // Use RequestDispatcher to forward user to modify -page
 		  RequestDispatcher rd = getServletConfig().getServletContext()
 		      .getRequestDispatcher("/muokkaa.jsp");
 		  rd.forward(request, response);

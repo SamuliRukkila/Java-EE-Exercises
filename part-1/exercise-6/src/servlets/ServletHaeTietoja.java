@@ -60,6 +60,8 @@ public class ServletHaeTietoja extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 	  throws ServletException, IOException {
 	  
+	  // Get needed meta-data for the search via request-parameters and put them into
+	  // local variables
 	  String word = (String) request.getParameter("hakusana");
 	  String choice = (String) request.getParameter("hakuvalinta");
 	  
@@ -75,13 +77,17 @@ public class ServletHaeTietoja extends HttpServlet {
 	  }
 	  
 	  PrintWriter out = response.getWriter();
+	  // Create new ArrayList which'll include all found customers
 	  ArrayList<AsiakasBean> CustomerList = new ArrayList<>();
 	  
 	  try {
+	    // Create new empty statement
 	    Statement stmt = conn.createStatement();
+	    // Execute query where we'll find customers whose are found with wanted attributes
 	    ResultSet rs = stmt.executeQuery(
 	        "SELECT * FROM asiakkaat WHERE `" + choice + "` LIKE '%" + word + "%';");
 	    
+	    // Use while -function to loop through all found customers
 	    while (rs.next()) {
 	      id = rs.getString("id");
 	      nimi = rs.getString("nimi");
@@ -90,25 +96,29 @@ public class ServletHaeTietoja extends HttpServlet {
 	      email = rs.getString("email");
 	      salasana = rs.getString("salasana");
 	      
+	      // Create new (temporary) object-bean to place information
 	      AsiakasBean papu = new AsiakasBean();
-	      
+	      // Push found values into bean's attributes
 	      papu.setId(id);
 	      papu.setNimi(nimi);
 	      papu.setOsoite(osoite);
 	      papu.setPuhelin(puhelin);
 	      papu.setEmail(email);
 	      papu.setSalasana(salasana);
-	      
+	      // Push created bean into CustomerList -arraylist
 	      CustomerList.add(papu);
 	    }
 	  } catch (SQLException e) {
 	    out.println(e);
 	  }
 	  
+	  // Set found customers and meta-data into attributes (these will be displayed
+	  // in the page)
 	  request.setAttribute("list", CustomerList);
 	  request.setAttribute("hakusana", word);
 	  request.setAttribute("hakuvalinta", choice);
 	  
+	  // Forward user into haku.jsp -site which'll display all found customers
 	  RequestDispatcher rd = getServletConfig().getServletContext()
 	    .getRequestDispatcher("/haku.jsp");
 	  rd.forward(request, response);

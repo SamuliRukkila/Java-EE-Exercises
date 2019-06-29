@@ -11,9 +11,14 @@
 	<%@ include file="valikko.jsp"%>
 	<body>
 		<h3>Muokkaa asiakasta</h3>
+		
+		<!-- Firstly we'll check that user has picked a customer who we'll modify -->
 		<c:if test="${requestScope.asiakas.id != null}">
 			<form name="muokkaaAsiakas" method="post" action="ServletMuokkaaAsiakas">
 				<table>
+					<!-- In this form we'll assing customer's old values inside form's values.
+					Every value can be modified expect customer's ID. We'll use JSTL-library
+					to place values inside inputs. -->
 					<tr>
 						<td>Id</td>
 						<td align="right"><input type="text" name="id" readonly="readonly"
@@ -52,5 +57,12 @@
 				</table>
 			</form>
 		</c:if>
+		
+		<!-- If user didn't pick any customer for modify -->
+		<c:if test="${requestScope.asiakas.id == null}">
+			<p>Et valinnut asiakasta</p>
+			<a href="AsiakkaatServlet">Palaa takaisin</a>
+		</c:if>
+		
 	</body>
 </html>

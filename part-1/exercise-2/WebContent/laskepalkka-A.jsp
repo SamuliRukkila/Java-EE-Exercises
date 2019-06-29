@@ -19,6 +19,7 @@
 			String salaryByHourReq = request.getParameter("salaryByHour");
 			String taxReq = request.getParameter("tax");
 			
+			// Create needed variables where values will be put
 			double hours = 0.0;
 			double salaryByHour = 0.0;
 			double tax = 0.0;
@@ -44,7 +45,7 @@
 				out.println(salary / (100 / (100 - tax)) + " €");
 			}
 		%>
-			<p><a href="palkkalomake.html">Laske uudestaan</a></p>
+			<p><a href="palkkalomake-A.html">Laske uudestaan</a></p>
 		
 	</body>
 </html>

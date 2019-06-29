@@ -35,6 +35,8 @@ public class UpdateCustomerServlet extends HttpServlet {
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
     try {
+      // Open connection to MySql via external class, opened connection will be
+      // assigned to a variable
       conn = classes.SQL.openConnection();
     } catch (Exception e) {
       System.out.println("Kantaan ei saada yhteyttä " + e);
@@ -52,6 +54,9 @@ public class UpdateCustomerServlet extends HttpServlet {
   
   protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+    
+    // Change request encoding to UTF-8
+    request.setCharacterEncoding("UTF-8");
     
     PrintWriter out = response.getWriter();
     HttpSession session = request.getSession(false);
@@ -77,7 +82,7 @@ public class UpdateCustomerServlet extends HttpServlet {
         "`salasana` = '"+ salasana +"' " +
         "WHERE id=" + id + ";"
       );
-      // If updation is successfull, assing new values to bean
+      // If updation is successful, assing new values to bean
       papu.setId(id);
       papu.setNimi(nimi);
       papu.setOsoite(osoite);
@@ -88,6 +93,7 @@ public class UpdateCustomerServlet extends HttpServlet {
       out.println(e);
     }
     
+    // Put new attribute "papu" to session
     session.setAttribute("papu", papu);
   }
   

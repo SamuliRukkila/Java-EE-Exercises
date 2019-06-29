@@ -56,6 +56,7 @@ public class LaskePalkkaServletC extends HttpServlet {
 		// RequestDispacther -object -> can be used to send data back to JSP
 		RequestDispatcher rd = getServletConfig().getServletContext()
 				.getRequestDispatcher("/palkkalomake-C.jsp");
+		// After that we'll forward user back to jsp -page
 		rd.forward(request, response);
 	}
 	

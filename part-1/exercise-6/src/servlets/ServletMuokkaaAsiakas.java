@@ -45,14 +45,14 @@ public class ServletMuokkaaAsiakas extends HttpServlet {
       return;
     }
     
+    // Set request + response encodings to 
     request.setCharacterEncoding("UTF-8");
     response.setContentType("text/html;UTF-8");
     response.setCharacterEncoding("UTF-8");
     
-    System.out.println(request.getCharacterEncoding());
-    System.out.println(request.getParameter("nimi"));
     PrintWriter out = response.getWriter();
     
+    // Put request-attributes into local variables
     String id = request.getParameter("id");
     String nimi = request.getParameter("nimi");
     String osoite = request.getParameter("osoite");
@@ -60,13 +60,16 @@ public class ServletMuokkaaAsiakas extends HttpServlet {
     String email = request.getParameter("email");
     String salasana = request.getParameter("salasana");
     
+    // Verify that needed attributes aren't empty / null
     if (nimi == null || nimi.length() == 0 || 
       email == null || email.length() == 0 || 
       salasana == null || salasana.length() == 0) {
       out.println("Nimi, salasana & sähköposti eivät saa jäädä tyhjäksi");
     } else {
+      // If values aren't empty, create an empty statement
       PreparedStatement pre_stmt = null;
       try {
+        // Do a update-query to a specific customer, uniqued by ID.
         String sql = "UPDATE asiakkaat SET " +
                      "`nimi` = '"+ nimi +"'," +
                      "`osoite` = '"+ osoite +"'," +
@@ -75,9 +78,10 @@ public class ServletMuokkaaAsiakas extends HttpServlet {
                      "`salasana` = '"+ salasana +"' " +
                      "WHERE id=" + id + ";";
         
+        // After we created the variable which holds the query, execute it
         pre_stmt = conn.prepareStatement(sql);
         pre_stmt.executeUpdate();
-        
+        // After the query, redirect user to AsiakkaatServlet which'll display all customers
         response.sendRedirect("AsiakkaatServlet");
         
       } catch (SQLException e) {

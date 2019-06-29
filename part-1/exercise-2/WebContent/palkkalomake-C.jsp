@@ -7,6 +7,8 @@
 		<title>Laske palkkasi</title>
 	</head>
 	<body>
+		<h3>Laske palkkasi</h3>
+		
 		<!-- Force inputs to number and allow them to include decimals -->
 		<form name='countPayment' method="post" action="LaskePalkkaServletC">
 			<p>Tehdyt tunnit:</p> 
@@ -17,6 +19,7 @@
 			<input type="number" step="any" name="tax" required>
 			<p><input type="submit" value="Laske palkka"></p>
 		</form>
+		
 		<%
 			request.setCharacterEncoding("UTF-8");
 			// If there were error while calculating payment
