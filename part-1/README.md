@@ -26,4 +26,6 @@ An assignment where we'll modify a ready-made MVC-application to include a PUT-r
 
 An assignment where we'll modify almost-ready-made application where you can perform CRUD-actions for customers. For this application we'll add search and modify -actions.
 
-### #7.
+### #7. CustomerRegistration -application with Payara + Connection Pool
+
+In this assignment we'll change the default server (TomCat) into a Payara -server. To connect to MySQL-database, we need to create a new Connection Pool which'll be in connection with the database.
