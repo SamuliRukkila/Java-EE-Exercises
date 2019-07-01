@@ -1,0 +1,24 @@
+<!-- 
+JSF-facelet, joka näytetään jos käyttäjä on kirjautunut onnistuneesti sisään. Hakee @Named
+pavun avulla käyttäjänimen siitä käyttäjistä, joka juuri kirjautui sisään.
+-->
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html">
+	<h:head>
+		<title>JSF Authentication</title>
+		<style>
+			.successText {
+				color: green;
+				margin: 12px;
+				font-weight: bold;
+			}
+		</style>
+	</h:head>	
+	<h:body>
+		<div id="result">
+			Welcome, <span id="userName"><h:outputLabel class="successText"
+				value="#{loginBean.userName}" /></span>
+		</div>
+	</h:body>
+</html>

@@ -1,0 +1,45 @@
+<!-- 
+index.xhtml on alkusivu, johon käyttäjän viedään kun hän saapuu web-sovellukseen (tämä
+on määritelty web.xml -konfiguraatiotiedostossa). Tämä tiedosto on JSF-facelet, joka 
+muodostaa osan käyttöliittymästä (View). Index.xhtml on yhteydessä JSF:n @Named beaniin, joka
+sisältää sisäänkirjautumisen.
+
+Käyttäen hyväksi JSF:n toimintoja, lomakkeessa olevat tiedostot voidaan "submit" -painikkeen avulla 
+lähettää suoraan @Named -pavulla, joka suorittaa autentikoitumisen.
+-->
+
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html">
+  <h:head>
+    <title>JSF Authentication</title>
+    <style>
+      .textPlacement {
+	      margin: 12px;
+      }
+    </style>
+  </h:head>
+  <h:body>
+    <h2>JSF Authentication Example</h2>
+    <!-- JSF lomake -->
+    <h:form id="loginForm">
+      <!-- Input, johon voit syöttää ktunnuksesi -> lähetetään mukana papuun -->
+      <div id="userNameDiv" class="textPlacement">
+        <h:outputLabel value="Username: " />
+        <h:inputText value="#{loginBean.userName}" />
+      </div>
+      <!-- Input, johon voit syöttää salasanasi -> lähetetään mukana papuun -->
+      <div id="passwordDiv" class="textPlacement">
+        <h:outputLabel value="Password: " />
+        <h:inputSecret value="#{loginBean.password}" />
+      </div>
+      <!-- Painike, jota painamalla otetaan yhtettä LoginBean -papuun, joka hoitaa 
+      autentikoitumisen. Serveri palauttaa "success"/"failure" -arvon, jonka avulla
+      (action) käyttäjä viedään vastaavalla sivulle. -->
+      <div id="submitBtn" class="textPlacement">
+        <h:commandButton value="Login"
+          action="#{loginBean.validateUserLogin}" />
+      </div>
+    </h:form>
+  </h:body>
+</html>
