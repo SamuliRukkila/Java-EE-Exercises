@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+  <title>Facelet Title</title>
+</h:head>
+<h:body>
+
+
+  <p>
+    <b>Luo tunnus ja salasana</b>
+  </p>
+
+  <p>
+    Tämä on demo jossa tunnusta ei tarkisteta kannasta vaan
+    "feikkitarkistus" tapahtuu DbBean-pavussa.<br /> Kirjoita tunnus
+    username ja laita sen jälkeen kursori salasanakenttään.<br />
+    Kokeile sitten jotain muuta tunnusta
+  </p>
+
+  <h:form>
+
+    <!--<h:panelGrid columns="2"> luo html-taulukon johon kaikki elementit menevät järjestyksessä
+            kahteen sarakkeeseen. <h:panelGroup> niputtaa useamman elementin samaan soluun-->
+    <h:panelGrid columns="2">
+
+      <h:outputText value="Tunnus:" />
+      <h:panelGroup>
+
+        <h:inputText size="20" maxlength="20" id="username"
+          value="#{userBean.username}">
+          <!-- username lähetetään XHR-olion mukana ja vastaus palautuu
+                     elementtiin jonka id on output-->
+          <f:ajax execute="username" render="output" event="blur" />
+        </h:inputText>
+
+        <h:outputText id="output" value="#{userBean.ajaxmessage}" />
+      </h:panelGroup>
+
+      <h:outputText value="Salasana:" />
+      <h:inputText size="20" maxlength="20" value="#{userBean.password}" />
+      <br />
+      <h:commandButton value="Lähetä" />
+    </h:panelGrid>
+
+  </h:form>
+</h:body>
+</html>
+
