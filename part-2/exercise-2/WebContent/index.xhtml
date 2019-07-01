@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:h="http://xmlns.jcp.org/jsf/html">
+  
+  <h:head>
+    <style>
+      #resultnumber {
+        background-color: red;
+        border-radius: 150px;
+        color: white;
+        padding: 3px 7px;
+        margin: 3px;
+      }
+      input[type=submit] {
+        margin: 1px;
+      }
+      .throwBtn {
+        padding: 5px;
+        margin: 5px;
+      }
+    </style>
+	 <title>JSF - Heitä noppaa</title>
+  </h:head>
+  
+  <h:body>
+    <!-- Since this application will include AJAX-functions, we'll put the whole
+    section inside <h:form> -tags in order for the AJAX to work. -->  
+    <h:form>
+      
+      <!-- Will show the value of the dice everytime user rolls the dice. Updated value
+      will come from Bean, updated by AJAX -->
+      <p>Nopan silmäluvuksi tuli
+        <span id="resultnumber">
+          <h:outputText id="result" value="#{DiceBean.result}"/>
+        </span>
+      </p>
+      
+      <hr/>
+      
+      <!-- Shows the sum of all the dice-throws. Value will be updated asynchronously via AJAX -->
+      <p>Heittojen summa on nyt:
+        <b><h:outputText id="totalsum" value="#{DiceBean.sum}"/></b>
+      </p>
+      <!-- Shows the amount of throws by dice. Value will be updated asynchronously via AJAX -->
+      <p>Noppaa on heitetty yhteensä
+        <b><h:outputText id="throwAmount" value="#{DiceBean.throwAmount}"/></b>
+        kertaa
+      </p>
+      <!-- Shows the average number of dice sums. Value will be updated asynchronously via AJAX -->
+      <p>Heittojen keskiarvo:
+        <b><h:outputText id="average" value="#{DiceBean.average}"/></b>
+      </p>
+      
+      <!-- Command-button which will execute a function in bean. This bean-function will throw dice
+      and get a random number between 1-6. When this event is fired we'll use <f:ajax> -element and specify
+      which elements (by ID) will be updated asynchronously (without page-refresh). -->
+      <h:commandButton actionListener="#{DiceBean.throwDice(ae)}"
+        value="Heitä noppaa" class="throwBtn">
+        <f:ajax execute="@form" render="result throwAmount totalsum average"/>
+      </h:commandButton>
+      
+      <!-- Command-button which will empty the total sum of dice-throws. With <f:ajax> -element, we'll be able
+      to update the sum-value to zero asynchronously. -->
+      <h:commandButton actionListener="#{DiceBean.resetSum()}"
+        value="Nollaa summa">
+        <f:ajax execute="@form" render="totalsum"/>
+      </h:commandButton>
+      
+      <!-- Command-button which will empty the amount of dice-throws. 
+      With <f:ajax> -element, we'll be able to update the throw-value to zero asynchronously. -->      
+      <h:commandButton actionListener="#{DiceBean.resetThrows()}"
+        value="Nollaa heitot">
+        <f:ajax execute="@form" render="throwAmount"/>
+      </h:commandButton>
+      
+      <!-- Command-button which will empty the average sum of dice-throws. 
+      With <f:ajax> -element, we'll be able to update the average value to zero asynchronously. -->
+      <h:commandButton actionListener="#{DiceBean.resetAverage()}"
+        value="Nollaa keskiarvo">
+        <f:ajax execute="@form" render="average"/>
+      </h:commandButton>
+    
+    </h:form>
+  </h:body>
+  
+</html>
