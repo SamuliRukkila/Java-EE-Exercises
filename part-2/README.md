@@ -1,4 +1,4 @@
-# Part 1 assignments
+# Part 2 assignments - JSF
 
 ### #1 JSF-tutorial
 
