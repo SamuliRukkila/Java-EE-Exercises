@@ -1,7 +1,9 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:f="http://xmlns.jcp.org/jsf/core"
-  xmlns:h="http://xmlns.jcp.org/jsf/html">
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html">
   
   <h:head>
     <style>
@@ -32,7 +34,8 @@
       will come from Bean, updated by AJAX -->
       <p>Nopan silmäluvuksi tuli
         <span id="resultnumber">
-          <h:outputText id="result" value="#{DiceBean.result}"/>
+          <h:outputText id="result" 
+            value="#{DiceBean.result} > 0 ? DiceBean.result : 'Ei heitetty'"/>
         </span>
       </p>
       
@@ -57,7 +60,7 @@
       which elements (by ID) will be updated asynchronously (without page-refresh). -->
       <h:commandButton actionListener="#{DiceBean.throwDice(ae)}"
         value="Heitä noppaa" class="throwBtn">
-        <f:ajax execute="@form" render="result throwAmount totalsum average"/>
+        <f:ajax execute ="@form" render="result throwAmount totalsum average"/>
       </h:commandButton>
       
       <!-- Command-button which will empty the total sum of dice-throws. With <f:ajax> -element, we'll be able

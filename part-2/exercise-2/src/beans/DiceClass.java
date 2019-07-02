@@ -3,19 +3,30 @@ package beans;
 import java.io.Serializable;
 import java.util.Random;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 
 
+/**
+ * Using JSF's annotion we'll make a @named bean. Any 
+ * other file can use this bean without importing it just
+ * by calling its name - "DiceBean". 
+ * 
+ * Bean is @SessionScoped because information about dice throws etc.
+ * are needed to keep in storage so user throwing dices can see 
+ * past information about throws.
+ * 
+ * @author samuli
+ */
 @Named(value = "DiceBean")
-@RequestScoped
+@SessionScoped
 public class DiceClass implements Serializable {
 
   private static final long serialVersionUID = 1L;
  
   private int sum = 0;
-  private int result = 5;
+  private int result = 0;
   private int throwAmount = 0;
   private double average = 0;
   
