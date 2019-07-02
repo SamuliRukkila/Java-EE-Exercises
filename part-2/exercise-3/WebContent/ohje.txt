@@ -1,0 +1,14 @@
+JSFDbEsim -esimerkki
+
+Esimerkissä demotaan kahden Named Beanin yhteistoimintaa pienessä
+sovelluksessa. Tarkemmat tiedot tiedostojen kommenteissa.
+
+-DbBean voi hakea tiedot kannasta ja välittää ne UserBeanille
+-UserBean on JSF-bean joka välittää tiedot käyttöliittymään
+
+Sovellus voi hakea tietoa kannasta, mutta se on tarkoituksella tehty 
+toimivaksi myös ilman kantaa, jotta esimerkkiä voi kokeilla helposti.
+Oletuksena sovellus toimii ilman kantaa ja sitä pitää hieman muokata
+kommenteissa olevien ohjeiden mukaan jotta se saadaan hakemaan dataa 
+kannasta.
+
