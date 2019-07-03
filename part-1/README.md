@@ -1,4 +1,4 @@
-# Part 1 assignments
+# Part 1 assignments - JSP, JSTL, Servlets & Beans
 
 ### #1 Servlet + JSP -tutorial
 
