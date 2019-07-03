@@ -3,49 +3,82 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
   xmlns:h="http://xmlns.jcp.org/jsf/html"
   xmlns:f="http://xmlns.jcp.org/jsf/core">
-<h:head>
-  <title>Facelet Title</title>
-</h:head>
-<h:body>
+  <h:head>
+    <title>Lisää asiakkaita</title>
+    <style>
+      body {
+        font-family: Arial;
+        margin: 10px;
+      }
+      .used {
+        background-color: red;
+        margin: 5px;
+        padding: 5px;
+        border-radius: 5px;
+        color: white;
+      }
+      .notUsed {
+        background-color: green;
+        margin: 5px;
+        padding: 5px;
+        border-radius: 5px;
+        color: white;
+      }
+    </style>
+  </h:head>
+  <h:body>
 
-
-  <p>
-    <b>Luo tunnus ja salasana</b>
-  </p>
-
-  <p>
-    Tämä on demo jossa tunnusta ei tarkisteta kannasta vaan
-    "feikkitarkistus" tapahtuu DbBean-pavussa.<br /> Kirjoita tunnus
-    username ja laita sen jälkeen kursori salasanakenttään.<br />
-    Kokeile sitten jotain muuta tunnusta
-  </p>
-
-  <h:form>
-
-    <!--<h:panelGrid columns="2"> luo html-taulukon johon kaikki elementit menevät järjestyksessä
-            kahteen sarakkeeseen. <h:panelGroup> niputtaa useamman elementin samaan soluun-->
-    <h:panelGrid columns="2">
-
-      <h:outputText value="Tunnus:" />
-      <h:panelGroup>
-
-        <h:inputText size="20" maxlength="20" id="username"
-          value="#{userBean.username}">
-          <!-- username lähetetään XHR-olion mukana ja vastaus palautuu
-                     elementtiin jonka id on output-->
-          <f:ajax execute="username" render="output" event="blur" />
+    <h3>Luo tunnus ja salasana</h3>
+  
+    <h:form>
+      <!-- Both username & password are inside <h:panelGrid> which is same as html-table.
+      This way we can even them accordingly to each other. -->
+      <h:panelGrid>
+  
+        <!-- USERNAME -->
+        <h:outputText value="Tunnus:"/>
+        <h:panelGroup>
+          <h:inputText size="20" maxlength="20" id="username"
+            value="#{userBean.username}">
+            <!-- When user click away from username-input, that username will be sent to bean which'll
+            verify that chosen username isn't taken already. In case it is (or isn't) a message will pop,
+            telling the situation of that specific username. -->
+            <f:ajax execute="username" render="output submitBtn" event="blur"/>
+          </h:inputText>
+          <!-- Message-panel which will tell if username is taken or not taken already -->
+          <h:outputText styleClass="#{userBean.ajaxmessage == 'Käytettävissä' ? 'notUsed' : 'used'}" 
+            id="output" value="#{userBean.ajaxmessage}"/>
+        </h:panelGroup>
+        
+        <!-- PASSWORD -->        
+        <h:outputText value="Salasana:"/>
+        <h:inputText id="password" size="20" minlength="5" maxlength="20"
+          value="#{userBean.password}" required="true">
         </h:inputText>
 
-        <h:outputText id="output" value="#{userBean.ajaxmessage}" />
-      </h:panelGroup>
-
-      <h:outputText value="Salasana:" />
-      <h:inputText size="20" maxlength="20" value="#{userBean.password}" />
-      <br />
-      <h:commandButton value="Lähetä" />
-    </h:panelGrid>
-
-  </h:form>
-</h:body>
+      <!-- SUBMIT CREDENTIALS -->
+        <h:panelGroup>
+          <!-- Submit-button will stay disabled if username hasn't been verified yet. It also won't execute 
+          if password-input is empty. If both inputs are correct, those values will be sent to bean via AJAX.
+          After the insertion of the new user has been made, message will pop up, telling if adding the user 
+          was successful. Username, password and output will be emptied too if succeeds. -->
+          <h:commandButton id="submitBtn" value="Lähetä" 
+            actionListener="#{userBean.sendCredentials()}"
+            disabled="#{userBean.ajaxmessage != 'Käytettävissä'}">
+            <f:ajax execute="username password" render="notice username password output"/>          
+          </h:commandButton>
+        </h:panelGroup>
+        
+      </h:panelGrid>
+      
+      <!-- Information box, which'll tell if insertion of the new user was successful or not. -->
+      <p>
+        <h:outputText id="notice" value="#{userBean.notice}" 
+          styleClass="#{userBean.notice == 'Tunnukset luotu' ? 'notUsed' : 'used'}"/>
+      </p>
+      
+    </h:form>
+    
+  </h:body>
 </html>
 
