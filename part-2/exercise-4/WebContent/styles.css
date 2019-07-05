@@ -1,0 +1,69 @@
+body {
+	font-family: Arial;
+	margin: 20px;
+	margin-top: 40px;
+}
+
+h3 {
+	margin-top: 35px;
+}
+
+.customersTable {
+	border-collapse: collapse;
+}
+
+td {
+	padding: 0 15px;
+}
+
+.customersTableHeader {
+	text-align: center;
+	background-color: #4C4C4C;
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	padding: 0 15px;
+	color: white;
+	height: 30px;
+}
+
+.customersTableOddRow {
+	background-color: #BEBEBE;
+	height: 30px;
+}
+
+.customersTableEvenRow {
+	height: 30px;
+	background-color: #E0E0E0;
+}
+
+td {
+	height: 50px;
+}
+
+a {
+	margin-right: 10px;
+	border-radius: 5px;
+	background-color: gray;
+	color: white;
+	padding: 10px;
+	text-decoration: none;
+}
+
+a:hover {
+	background-color: #A8A8A8;
+	color: black;
+}
+
+.success {
+	background-color: green;
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.error {
+	background-color: red;
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+}

@@ -1,0 +1,12 @@
+<!-- External .xhtml-file which will display the navbar between viewing
+customers and adding new one. Will be placed inside WEB-INF/ -folder so 
+it cannot be opened via url. -->
+
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      <h:link value="Näytä asiakkaat" outcome="list"/>
+      <h:link value="Lisää asiakas" outcome="add"/>
+</ui:composition>

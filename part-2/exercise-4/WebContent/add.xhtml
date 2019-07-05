@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+  <!-- Facelet which enables one to add new customers
+  to the table. All the input values will be placed to @Named bean.
+  After user has filled every input and presses the button, bean's function
+  will be executed which will push new values into DB-bean. This bean will 
+  insert those values into the table. -->
+  
+  <!-- Every input is required in order to send those values. After the 
+  insert-update has been made, a status-message will pop-up for user to notify
+  if the addition of the customer was successful or not. -->
+  <h:head>
+    <title>Asiakkaat | Tietokanta</title>
+    <link rel="stylesheet" href="styles.css"/>
+  </h:head>
+  
+  <h:body>
+    <!-- Include a separate xhtml file which includes navbar -->
+    <ui:include src="./WEB-INF/navbar.xhtml"/>
+  
+    <h3>Lisää asiakas</h3>
+    
+    <!-- Include all inputs inside a <h:panelGrip> which works like a table. -->
+    <h:form>
+      <h:panelGrid columns="2">
+      
+        <h:outputLabel for="name">
+          Nimi:
+        </h:outputLabel>
+        <h:inputText value="#{customerBean.nimi}" id="name" required="true"/>
+      
+        <h:outputLabel for="address">
+          Osoite:
+        </h:outputLabel>
+        <h:inputText value="#{customerBean.osoite}" id="address" required="true"/>
+        
+        <h:outputLabel for="phone">
+          Puhelinnumero:
+        </h:outputLabel>
+        <h:inputText value="#{customerBean.puhelin}" id="phone" required="true"/>
+        
+        <h:outputLabel for="email">
+          Sähköpostiosoite:
+        </h:outputLabel>
+        <h:inputText value="#{customerBean.email}" id="email" required="true"/>
+        
+        <h:outputLabel for="password">
+          Salasana:
+        </h:outputLabel>
+        <h:inputSecret value="#{customerBean.salasana}" id="password" required="true"/>
+        
+        <!-- After user has filled every input, the submit -button can be pressed which'll
+        send those values onwards. After the execution, the AJAX -element will automatically
+        update needed elements in this facelet (status-message etc.) -->
+        <h:commandButton actionListener="#{customerBean.addCustomer()}" 
+          value="Lisää">
+          <f:ajax execute="name address phone email password" 
+            render="name address phone email password insertStatus"/>
+        </h:commandButton>
+        <!-- Element which displays the status-message. If there's no status message, this
+        element will be automatically hidden from the view. Additional styling will be included
+        according to the status-message. -->
+        <h:outputText style="display:#{customerBean.status == null ? 'none' : 'initial'}" 
+          id="insertStatus" value="#{customerBean.status}"
+          styleClass="#{customerBean.status == 'Lisätty' ? 'success' : 'error'}"/>
+      </h:panelGrid>
+      
+    </h:form>
+    
+    
+  </h:body>
+</html>
+

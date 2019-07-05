@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+  
+  <!-- Facelet which'll print all the customers from the database.
+  It'll make a connection to @Named bean which will use another bean
+  to fetch the data. After the data comes (as an ArrayList) it'll printed
+  to facelet using JSF's <h:datatable>.  -->
+  
+  <h:head>
+    <title>Asiakkaat | Tietokanta</title>
+    <link rel="stylesheet" href="styles.css"/>
+  </h:head>
+  
+  <h:body>
+    <!-- Include a separate xhtml file which includes navbar -->
+    <ui:include src="./WEB-INF/navbar.xhtml"/>
+  
+    <h3>Asiakkaat</h3>
+    
+    <!-- Using JSF's datatable to display all the data from ArrayList.
+    Temporary variable will be used to identify all the values to their 
+    rightful slots. We'll then use various style-classes to customize table. -->
+    <h:dataTable value="#{customerBean.customers}" var="c"
+      styleClass="customersTable"
+      headerClass="customersTableHeader"
+      rowClasses = "customersTableOddRow, customersTableEvenRow">
+      
+      <h:column>
+        <f:facet name="header">ID</f:facet>
+          #{c.id}
+      </h:column>
+      
+      <h:column>
+        <f:facet name="header">Nimi</f:facet>
+          #{c.nimi}
+      </h:column>
+      
+      <h:column>
+        <f:facet name="header">Osoite</f:facet>
+          #{c.osoite}
+      </h:column>
+  
+      <h:column>
+        <f:facet name="header">Puhelin</f:facet>
+          #{c.puhelin}
+      </h:column>
+    
+      <h:column>
+        <f:facet name="header">Email</f:facet>
+          #{c.email}
+      </h:column>
+      
+      <h:column>
+        <f:facet name="header">Salasana</f:facet>
+          #{c.salasana}
+      </h:column>
+  
+    </h:dataTable>
+  </h:body>
+</html>
+
