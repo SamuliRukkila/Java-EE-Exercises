@@ -22,3 +22,5 @@ We'll create a JSF-application from stratch. Application will consist of 2 facel
 We'll further modify upper assignment by changing the viewing table and submit -form into PrimeFace's elements. Including JAR in WEB-INF/ -folder and adding another link to XHTML.
 
 ### #6 JSF-Application with MYSQL + PrimeFace-table + SPA (Part 3)
+
+We'll further modify upper assingments by making it SPA-application - meaning no need to refresh pages, since this will be done by PrimeFace's tabs and AJAX.
