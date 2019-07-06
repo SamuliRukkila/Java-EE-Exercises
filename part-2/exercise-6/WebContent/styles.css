@@ -1,0 +1,57 @@
+body {
+	font-family: Arial;
+	margin: 20px;
+	margin-top: 40px;
+}
+
+.msgStatus {
+	margin-top: 20px;
+}
+
+.msgStatus * {
+	padding: 10px 2px;
+}
+
+body .ui-staticmessage.ui-message {
+	width: 100%;
+}
+
+.customersTableHeader {
+	text-align: center;
+	background-color: #4C4C4C;
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	padding: 0 15px;
+	color: white;
+	height: 30px;
+}
+
+.customersTableOddRow {
+	background-color: #BEBEBE;
+	height: 30px;
+}
+
+.customersTableEvenRow {
+	height: 30px;
+	background-color: #E0E0E0;
+}
+
+
+
+.ui-panel {
+	margin-top: 25px;
+}
+
+.success {
+	background-color: green;
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.error {
+	background-color: red;
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+}
