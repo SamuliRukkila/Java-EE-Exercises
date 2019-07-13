@@ -1,11 +1,4 @@
-﻿/*
- * Entity class eli entiteettiluokka Book on luokka joka 
- * vastaa tietokannan book -taulun tietueita.
- * Entiteettiluokkaa tarvitaan luotaessa ORM-kirjastolla
- * taulun tietueista olioita ja olioista taulun tietueita.
- * Oliot luodaan muistiin aina tästä luokasta.
- */
-package jpaclasses;
+﻿package jpaclasses;
 
 import java.io.Serializable;
 
@@ -23,8 +16,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+// @Entity -annotation defines an entity in JPA. It'll tell JPA
+// that this class is in contact with JPA-SQL -connections.
 @Entity
-@Table(name = "book") // Entiteettiluokka vastaa taulua book
+// Which table this entity-class targets
+@Table(name = "book")
+// Ready-made queries for use
 @NamedQueries({ 
     @NamedQuery(name = "Book.findAll", query = "SELECT b FROM Book b"),
 		@NamedQuery(name = "Book.findById", query = "SELECT b FROM Book b WHERE b.book_id = :book_id"),
@@ -36,9 +33,12 @@ public class Book implements Serializable {
   
 	private static final long serialVersionUID = 1L;
 	
+	// Main column in table
 	@Id
+	// Auto-incremented value
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Basic(optional = false)
+	// Column's name in MySQL-table
 	@Column(name = "book_id")
 	private Integer book_id;
 	
@@ -54,6 +54,7 @@ public class Book implements Serializable {
 	@Column(name = "author")
 	private String author;
 	
+	// Reference to another table - BookGroup
 	@ManyToOne(optional = true)
 	@JoinColumn(name = "bookgroup_id", referencedColumnName = "bookgroup_id")
 	private BookGroup bookgroup;
@@ -103,24 +104,6 @@ public class Book implements Serializable {
 	
 	public void setBookGroup(BookGroup bg) {
 	  this.bookgroup = bg;
-	}
-	
-	@Override
-	public int hashCode() {
-		int hash = 0;
-		hash += (book_id != null ? book_id.hashCode() : 0);
-		return hash;
-	}
-
-	@Override
-	public boolean equals(Object object) {
-		// TODO: metodi ei toimi ellei book_id-kentällä ole arvoa
-		if (!(object instanceof Book)) {
-			return false;
-		}
-		Book other = (Book) object;
-		return !((this.book_id == null && other.book_id != null)
-				|| (this.book_id != null && !this.book_id.equals(other.book_id)));
 	}
 
 	@Override

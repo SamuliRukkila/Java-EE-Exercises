@@ -271,7 +271,9 @@ public class JPAsimplekoe {
 	 
 	
 	/**
-	 * Finds all the books from the table and print them into a table -structure.
+	 * Finds all the books + book-groups from the table and print them 
+	 * into a table -structure. Function uses two @NamedQueries to 
+	 * fetch all the needed rows with SQL-queries.
 	 */
   public static void showBooks() {
     
