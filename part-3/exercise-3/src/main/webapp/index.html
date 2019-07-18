@@ -1,0 +1,42 @@
+<!DOCTYPE html> 
+<html>
+  <head>
+    <title>Asiakkaat | Tietokanta</title>
+    <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+  </head>
+  <body>
+    <h3>JPA REST-API</h3>
+    <p>Tällä ohjelmalla ei ole käyttöliittymää - ota yhteys esim. Postmanilla tehdäksesi HTTP-kutsuja</p>
+    <hr/>
+    <h4>Esimerkkikutsuja: </h4>
+    <div>
+      Hae kaikki asiakkaat: <br/>
+      <ul><li><b>(GET)</b> http://localhost:8080/Customer-REST-API/customersapi/customer</li></ul>
+    </div>
+    <div>
+      Hae asiakas ID:n avulla: <br/>
+      <ul><li><b>(GET)</b> http://localhost:8080/Customer-REST-API/customersapi/customer/{{:id}}</li></ul>
+    </div>
+    <div>
+      Poista asiakas ID:n avulla: <br/>
+      <ul><li><b>(DELETE)</b> http://localhost:8080/Customer-REST-API/customersapi/customer/{{:id}}</li></ul>
+    </div>
+    <div>
+      Lisää asiakas: <br/>
+      <ul>
+        <li><b>(POST)</b> http://localhost:8080/Customer-REST-API/customersapi/customer (application/JSON)</li>
+        <li>Esimerkki asiakkaan tiedoista: </li>
+      </ul>
+    </div>
+    <xmp>
+    {
+        "email": "esimerkki.esim@hotmail.com",
+        "nimi": "Aapeli Aatukka",
+        "osoite": "Mutatie 13B 93",
+        "puhelin": "040 1212123",
+        "salasana": "salainensalasana"
+    }
+    </xmp>
+  </body>
+</html>
