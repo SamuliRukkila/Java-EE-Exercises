@@ -1,0 +1,16 @@
+Miten SOAP-API eroaa REST-APIsta ? 
+----------------------------------
+
+- SOAP-API käyttää melkein pelkästään XML + HTTP, kun taas REST-API useimpia vaihtoehtoja, kuten
+HTTP, JSON, URL ja XML.
+- sovelluslogiikassa SOAP-API käyttää hyväkseen @WebService -rajapintapalvelua, kun taas REST-API
+käyttää enemmän URLeja hyväkseen (@path("/fooservice")) 
+- SOAP-API:ssa pystyt muodostamaan sessioita palvelin-puolella, kun taas REST-API:ssa se on mahdotonta
+- SOAP-API:Ssa tiedonsiirtona voit käyttää protokollia kuten: HTTP, SMTP, UDP jne., mutta REST-APIssa
+vain HTTP:ta.
+
+
+Millaisessa muodossa tieto liikkuu kun käytetään SOAP-APIa?
+-----------------------------------------------------------
+
+Tieto liikkuu SOAP-API:ssa XML-muodossa. Tietoa voidaan siirtää protokollilla, kuten: HTTP, SMTP, UDP jne.
