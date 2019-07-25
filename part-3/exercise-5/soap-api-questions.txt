@@ -1,7 +1,17 @@
+
 Miten SOAP-apin käyttö eroaa REST-apin käytöstä? 
 ------------------------------------------------
 
-
+- SOAP-API:n pystyttäminen on pidempiaikaista kuin REST-API:n.
+- Jos haluat käyttää API:a clientin kautta, REST-APIssa voit vain tehdä HTTP-kyselyn REST-API:n
+	haluamaan URL-osoitteeseen. SOAP-API:ssa sinun pitää esim. luoda client stub serveristä,
+	jonka avulla voit ottaa yhteyden SOAP-API:iin. 
+- SOAP-API palauttaa 99% XML:llää kun taas REST-API yleensä JSON-infoa (mutta myös mahdollista palauttaa
+	muitakin muotoja). 
+- SOAP-APIN päällelaitossa syntyy ?WSDL -loppuinen URL (Web Service Description Language), joka toimii
+	ns. välikätenä clientin ja serverin välillä. 
+- Jos haluat tehdä jostain luokista ja/tai metodeista "julkisia" ts. niitä voi kutsua API:n avulla, sinun
+	pitää merkata ne @WebService + @WebMethod -annotaatioilla.
 
 Miksi SOAP-apia edelleen käytetään?
 -----------------------------------
