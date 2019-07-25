@@ -1,6 +1,6 @@
 /*
  Main file of the EJB-project - Session Bean class. We'll
- expose this EJB-class to a web service via annotation @WebService.
+ expose this EJB-class to a web service via annotation @WebService to create a SOAP-API.
  All the public methods in this web-service will be declared in the class. It'll
  be using JAX-WS services so the data will be transferred via XML. 
 */
