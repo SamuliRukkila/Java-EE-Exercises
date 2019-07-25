@@ -1,0 +1,13 @@
+Miten SOAP-apin käyttö eroaa REST-apin käytöstä? 
+------------------------------------------------
+
+
+
+Miksi SOAP-apia edelleen käytetään?
+-----------------------------------
+
+Vaikka REST-API on noussut paljon suosioon nopeuden sekä yksinkertaisuuden takia, on SOAP-API 
+silti parempi vaihtoehto enterprise -tason applikaatioille kuten turvallisuus -applikaatioille,
+rahoitus-palveluille tai maksuväylille. SOAP-API on hitaampi, mutta tarjoaa paremman sisäänrakennetun
+turvallisuuden sekä tarkemmat guidelinet, joita kehittäjän pitää seurata.
+
