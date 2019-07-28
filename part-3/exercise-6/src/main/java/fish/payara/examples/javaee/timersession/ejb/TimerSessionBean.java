@@ -19,14 +19,23 @@ import javax.ejb.Timeout;
 import javax.ejb.Timer;
 import javax.ejb.TimerService;
 
+
 /**
- * TimerBean is a singleton session bean that creates a timer and prints out a
- * message when a timeout occurs.
+ * 2) Kyseessä on ns. timer-bean, joka käynnistyy heti kun sitä käyttävä applikaatio
+ * käynnistyy - @Startup. @Singleton -annotaation ansiosta tästä beanista ei luoda
+ * instanssia jokaiselle sitä käyttävällä käyttäjälle, vaan siitä sama instanssi jaetaan
+ * jokaisen tätä beania käyttävän kanssa
+ * 
+ * 3) @EJB-komponentti
  */
 @Singleton
 @Startup
 public class TimerSessionBean {
-
+  
+  /**
+   * 3) @EJB-komponentti. Otetaan käyttöön suoraan tässä beanissa, jotta sen funktiota voidaan
+   * käyttää hyväksi.
+   */
 	@Resource
 	TimerService timerService;
 
@@ -34,24 +43,47 @@ public class TimerSessionBean {
 	private Date lastAutomaticTimeout;
 
 	private static final Logger logger = Logger.getLogger("timersession.ejb.TimerSessionBean");
-
+	
+	/**
+	 * 2) Kun käyttäjä painaa "Set Timer" -nappia, tulee siitä tieto sekä millisekuntimäärä tänne
+	 * beanin välityksellä. Käyttäen hyväksi timerService -oliota, luodaan uusi timeri, joka 
+	 * laukaisee kaikki @Timeout -annotaation omaavat funktiot. @Timeout -funktiot eivät saa ottaa
+	 * kuin Timer -olion parametrin vastaan, eivätkä ne saa heittää omia virheitä.
+	 */
 	public void setTimer(long intervalDuration) {
 		logger.log(Level.INFO, "Setting a programmatic timeout for {0} milliseconds from now.", intervalDuration);
-		Timer timer = timerService.createTimer(intervalDuration, "Created new programmatic timer");
+		@SuppressWarnings("unused")
+    Timer timer = timerService.createTimer(intervalDuration, "Created new programmatic timer");
 	}
-
+	
+	/**
+	 * 2) Tämä laukaistaan kun timerService.createTimer() -funktiossa annettu timer loppuu. 
+	 * Lisää uuden Date -tyyppisen arvon luokan attribuuttiin.
+	 */
 	@Timeout
 	public void programmaticTimeout(Timer timer) {
 		this.setLastProgrammaticTimeout(new Date());
 		logger.info("Programmatic timeout occurred.");
 	}
-
+	
+	/**
+	 * 2) @Schedule -annotaation omaavat funktio ajetaan parametreissa annetun ohjeitten mukaan.
+	 * (Jos aikaa ei olla annettu se laukaistaan 24h välein yöllä). Tässä esimerkissa
+	 * kyseinen funktio ajetaan joka minuutin välein; se tulostaa viestin automaattisesta
+	 * timeoutista konsoliin sekä lisää uuden Date -tyyppisen arvon luokan attribuuttiin.
+	 */
 	@Schedule(minute = "*/1", hour = "*", persistent = false)
 	public void automaticTimeout() {
 		this.setLastAutomaticTimeout(new Date());
 		logger.info("Automatic timeout occurred");
 	}
-
+	
+	
+	
+	/**
+	 * 2) GETTERIT JA SETTERI
+	 */
+	
 	/**
 	 * @return the lastTimeout
 	 */

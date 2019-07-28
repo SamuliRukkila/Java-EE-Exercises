@@ -49,18 +49,41 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 /**
+ * 3) @EJB-komponentti. Ei säilytä tilaansa kyselyn jälkeen (@Stateless).
+ * 
+ */
+
+/**
  *
  * @author Steve Millidge (Payara Foundation)
  */
 @Stateless
 public class SmokeJPABean {
-
+  
+    /**
+     * 2) EntityManagerilla pystymme tekemään erilaisia 
+     * tietokantatoimintoja tiettyyn tietokantaan. 
+     * @PersistenceContext -annotaatiolla otetaan persistence.xml 
+     * -tiedostossa olevaan yhteyteen MySQL -palvelimeen. Tämän 
+     * mukana annetaan halutun yhteyden nimi, jotta yhteys saadaan
+     * muodostettua.
+     */
     @PersistenceContext(name = "SmokeTestPU")
     private EntityManager entityManager;
     
+    /**
+     * 2) EJBContext -rajapinta antaa instanssi-mahdollisuuden ko. @EJB
+     * -komponentissa oleviin käskyihin, dataan jne.
+     */
     @Resource
     private EJBContext context;
     
+    /**
+     * 2) Tässä otetaan yhteys JPA-luokkaan SmokeEntity. Parametri kertoo (howMany)
+     * kuinka monta kertaa tehdään uusi olio tästä luokasta, johon tallennetaan 
+     * esimerkkiviesti. Nämä pusketaan tietokantaan .persist -komennon avulla. 
+     * Palauttaa lopuksi "true" -arvon, jos tallennuksen aikana ei käynyt mitään.
+     */
     public boolean bulkLoad(int howMany) {
         boolean result = true;
         for (int i = 0; i < howMany; i++) {
@@ -73,7 +96,11 @@ public class SmokeJPABean {
     }
     
     
-    
+    /**
+     * 2) Tässä funktiossa tehdään uusi JPA-olio, johon lisätään esimerkkidataa 
+     * sekä esimerkkiaika. Lopuksi ne tallennetaan tietokantaan. Tallenettu 
+     * JPA-olio palautetaan takaisin.
+     */
     public SmokeEntity insert() {
         SmokeEntity entity = new SmokeEntity();
         entity.setData("Inserted Entity");
@@ -82,30 +109,56 @@ public class SmokeJPABean {
         return entity;
     }
     
+    /**
+     * 2) Tässä funktiossa etsitään tietty rivi taulusta ID:n avulla.
+     * Palautetaan löydetty olio.
+     */
     public SmokeEntity retrieve(Long id)  {
         return entityManager.find(SmokeEntity.class, id);
     }
     
+    /**
+     * 2) Tässä funktiossa lasketaan kaikki rivit mitä löydetään ko. taulusta. 
+     * Palautetaan luku Long -tyyppisenä.
+     */
     public long countAll() {
         Query q = entityManager.createQuery("SELECT COUNT(se) from SmokeEntity se");
         return (Long)q.getSingleResult();
     }
     
+    /**
+     * 2) Tässä funktiossa poistetaan KAIKKI rivit taulusta SmokeEntity. Palauttaa
+     * queryn tuloksen.
+     */
     public int deleteAll() {
         Query query = entityManager.createQuery("DELETE from SmokeEntity se");
         return query.executeUpdate();
     }
     
+    /**
+     * 2) Tässä funktiossa etsitään Person-JPA -luokasta tietty rivi ID:n perusteella.
+     * Palautetaan löydetty olio (rivi).
+     */
     public Person retrieveFamily(Long ID) {
         return entityManager.find(Person.class, ID);
     }
     
+    /**
+     * 2) Person -luokassa on yhteydet feikkitauluihin: spouse, parent & children.
+     */
     public Person createFamily() {
+        /**
+         * 2) Luodaan aluksi uusi ihminen - "Fred", ja tallennetaan se tietokantaan.
+         */
         Person fred = new Person();
         fred.setFirstName("Fred");
         fred.setLastName("Bloggs");
         entityManager.persist(fred);
         
+        /**
+         * 2) Seuraavaksi luodaan uusi ihminen - "Freda". Yhteyksien avulla Fredan 
+         * puolisoksi annetaan ylempänä luotu "Fred". Tallennetaan se tietokantaan.
+         */
         Person freda = new Person();
         freda.setFirstName("Freda");
         freda.setLastName("Bloggs");
@@ -113,15 +166,28 @@ public class SmokeJPABean {
         fred.setSpouse(freda);
         entityManager.persist(freda);
         
+        /**
+         * 2) Lopuksi luodaan ihminen - "Freddy". Yhteyksien avulla Freddyn vanhemmaksi 
+         * annetaan Fred ja toisinpäin. Tallennetaan se tietokantaan.
+         */
         Person freddy = new Person();
         freddy.setFirstName("Freddy");
         freddy.setLastName("Bloggs");
         freddy.setParent(fred);
         fred.addChild(freddy);
         entityManager.persist(freddy);
+        
+        /**
+         * 2) Lopuksi palautetaan ensimmäisenä JPA-luokassa tehty "Fred".
+         */
         return fred;
     }
     
+    /**
+     * 2) Tässä funktiossa kokeillaan aluski luoda uusi JPA-olio ja tallentaa se esimerkkidatalla.
+     * Tämän jälkeen käytetään context -oliota, jolla vyörytetään juuri tallennettu rivi takaisin.
+     * Jos kaikki onnistuu, palautetaan tallenettu olio.
+     */
     public SmokeEntity rollBack() {
         SmokeEntity p = new SmokeEntity();
         p.setData("Test Data");
@@ -129,7 +195,11 @@ public class SmokeJPABean {
         context.setRollbackOnly();
         return p;
     }
-
+    
+    /**
+     * 2) Tämä funktio poistaa kaikki rivit Person-JPA -luokasta. Palauttaa
+     * queryn tuloksen.
+     */
     public int deleteAllPeople() {
         Query query = entityManager.createQuery("DELETE from Person p");
         return query.executeUpdate();    

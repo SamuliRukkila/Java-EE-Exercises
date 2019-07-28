@@ -53,6 +53,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
+ * 2) JPA -luokka, jossa luodaan feikkitaulu(ja). Sisältää kaikki JPA
+ * -olion tekemiseen.
+ * 
+ * 3) Ei @EJB -komponentti
+ */
+
+/**
  *
  * @author Steve Millidge (Payara Foundation)
  */
@@ -125,11 +132,11 @@ public class Person implements Serializable  {
         this.parent = parent;
     }
 
-    public Collection getChildren() {
+    public Collection<Person> getChildren() {
         return children;
     }
 
-    public void setChildren(Collection children) {
+    public void setChildren(Collection<Person> children) {
         this.children = children;
     }
 

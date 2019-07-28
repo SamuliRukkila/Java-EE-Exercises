@@ -50,13 +50,57 @@ import java.io.PrintWriter;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.TransactionManagement;
 import javax.inject.Inject;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PersistenceContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+/**
+ * 1) Kyseinen sovellus toimii @WebServlet -annotaation alla. Eli
+ * se on servletti, johon ei tuoda omia parametreja.
+ * 
+ * 2) Kyseinen servletti injektoi itseensä muutaman @EJB -komponentin
+ * sekä yhden @ApplicationScoped -annotaatiolla varustetun beanin. 
+ * 
+ * Servletissä tehdään yllämainittujen beanien avulla erilaisia
+ * tietokanta-kyselyitä käyttäen hyväksi luotuja JPA-luokkia. Esimerkki-
+ * beaneissa käytetään tavallista ORM-objektointimuotoa sekä myös 
+ * transaktionia käyttäen UserTransaction -kirjastoa sekä 
+ * @Transactional -annotaatiota.
+ * 
+ * Jotta, servletti toimii oikein, pitää jokaisen kutsun palauttaa "true"
+ * -arvon servletin omassa templaattissa, jossa se kutsuu beanien funktiota.
+ * 
+ * 
+ * 4)
+ * @Stateless - @EJB-komponentti, joka tuhoaa session joka kutsun jälkeen
+ * @ApplicationScoped - Bean, joka on toiminnassa applikaation elinkaaren ajan
+ * @PersistenceContext - Otetaan persistence.xml tiedostossa olevaan
+ * -palvelimeen yhteys. Tämän mukana annetaan halutun yhteyden nimi, 
+ * jotta yhteys saadaan muodostettua (esim. MySQL -palvelimeen).
+ * @Resource -annotaatio kertoo, että tämä resurssi viitataan tähän palveluun. Servletti injektoi resurssin automaattisesti.
+ * @EJB - Injektoidaan Enterprise JavaBean kyseiseen sovellukseen
+ * @Inject - Injektoidaan tavallinen bean, arvo tmv. sovellukseen
+ * @TransactionManagement - Määrittää, onko pavulla "kontti-hallittuja" vai
+ * "papu-hallittuja" tapahtumia. 
+ * @Transactional - Mahdollstaa JPA-kyselyiden automaattisen transaktionin ilman
+ * esim. UserTransaction -kirjastoa. 
+ * 
+ * @Entity - Mahdollistaa JPA-luokassa ORM:in käytön SQL-kyselyille.
+ * @OneToOne - Yksi-yhteen -suhde SQL-taulussa
+ * @ManyToOne - Moni-yhteen -suhde SQL-taulussa
+ * @OneToMany - Yksi-moneen -suhde SQL-taulussa
+ */
 
 /**
  *
@@ -65,29 +109,45 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "SmokeTestJPA", urlPatterns = {"/SmokeTestJPA"})
 public class SmokeTestJPA extends HttpServlet {
     
+  private static final long serialVersionUID = 1L;
+  
+    /**
+     * 2) Komponentti sisältää funktioita, jotka tekee SQL-kyselyitä kuten 
+     * rivien poisto, etsintä, lisääminen jne. Kyseinen @EJB-komponentti 
+     * on yhteydessä kahteen muuhun JPA-luokkaan. Tämä komponentti toimiikin 
+     * siis välikätenä tämän servletin ja JPA-luokkien välillä.
+     * 3) @EJB-komponentti. 
+     */
     @EJB
     SmokeJPABean ejb;
     
+    /**
+     * 2) Komponentti sisältää funktiota, jotka tekee transaktionin avulla 
+     * SQL-kyselyitä kuten rivien poisto, etsintä jne. Toisin siis kuin
+     * ylempi @EJB-komponentti, tässä funktiot ensin aloittavat transaktionin,
+     * tekevät tarvittavat muutokset ja lopuksi vasta committaa ne (tallentaa 
+     * lopulliste) tauluun.
+     * 3) @EJB-komponentti
+     */
     @EJB
     SmokeJPABMBean bmejb;
     
+    /**
+     * 2) @ApplicatinScoped -bean, joka sisältää funktiota, jotka tekevät SQL-kyselyitä sekä
+     * -komentoja käyttäen @Transactional -annotaatiota, jokaisessa funktiossa. 
+     * Tämän takia ei transaktionin alkua sekä commit -funktiota tarvitse erikseen
+     * kutsua yksinkertaistaen täten koodia.
+     * 3) Ei ole @EJB-komponentti vaan @ApplicationScoped -tyypillä toimiva,
+     * tavallinen bean.
+     */
     @Inject
     TransactionalCDI cdi;
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -112,13 +172,29 @@ public class SmokeTestJPA extends HttpServlet {
         }
     }
     
+    /**
+     * 2) Tässä komponentissa käytetään hyväksi @EJB-komponenttia - "ejb". 
+     * Aluksi luodaan uusi SmokeEntity -JPA-luokan olio, jolla voidaan tehdä
+     * SQL-kyselyitä käyttäen ORM:ia. Tähän olioon lisätään valmiiksi määriteltyä
+     * dataa. Lopuksi katsotaan, löytyykö tämä juuri tallennettu rivi taulusta. 
+     * Jos se löytyy, palautetaan "true" -arvo.
+     */
     private boolean testInsertandRetrieve() {
+        @SuppressWarnings("unused")
         boolean result = false;
         SmokeEntity se = ejb.insert();
         SmokeEntity se2 = ejb.retrieve(se.getId());
         return Objects.equals(se.getId(), se2.getId());
     }
     
+    /**
+     * 2) Tässä komponentissa käytetään hyväksi @EJB-komponenttia - "ejb".
+     * bulkLoad() -funktio tallentaa 1000 uutta riviä tietokantaan. Tämän jälkeen
+     * lasketaan, että 1000 arvoa ollaan tallennettu tietokantaan countAll() -funktiolla.
+     * Lopuksi poistamme kaikki 1000 uutta riviä ja katsomme uudestaan countAll() 
+     * -funktiolla, että kaikki rivit tosiaan poistettiin. Jos kaikki tämä on tehty
+     * onnistuneesti palautetaan "true" -arvo.
+     */
     private boolean testDeleteAll() {
         boolean result = false;
         ejb.bulkLoad(1000);
@@ -127,13 +203,28 @@ public class SmokeTestJPA extends HttpServlet {
         result = result && (ejb.countAll() == 0);
         return result;
     }
+    
+    /**
+     * 2) Käytetään @EJB-komponenttia - "bmejb". 
+     * Luodaan uusi rivi käyttäen transaktionia. Tämän jälkeen koitetaan etsiä 
+     * tämä juuri luotu rivi ID:n perusteella. Jos se löytyy, palauttaa funktio
+     * arvon "true".
+     */
     private boolean testInsertandRetrieveBMT() {
+        @SuppressWarnings("unused")
         boolean result = false;
         SmokeEntity se = bmejb.insert();
         SmokeEntity se2 = bmejb.retrieve(se.getId());
         return Objects.equals(se.getId(), se2.getId());
     }
     
+    /**
+     * 2) Käytetään @EJB-komponenttia - "bmejb". 
+     * Luodaan 1000 uutta riviä, ja katsotaan .count() -funktion
+     * avulla, että rivejä on vähintään 1000. Tämän jälkeen
+     * poistetaan kaikki rivit ja katsotaan, että rivejä on 
+     * tasan 0. Jos kaikki komennot onnistuvat, palautetaan arvon "true".
+     */
     private boolean testDeleteAllBMT() {
         boolean result = false;
         bmejb.bulkLoad(1000);
@@ -143,13 +234,28 @@ public class SmokeTestJPA extends HttpServlet {
         return result;
     }
     
-        private boolean testInsertandRetrieveCDI() {
+    /**
+     * 2) Käytetään @ApplicationScoped -beania - "cdi".
+     * Luodaan uusi rivi SQL-tauluun, ja sen jälkeen etsitään tämä
+     * rivi ID:n avulla. Jos rivi luodaan, ja löydetään jälkeenpäin, 
+     * palautetaan "true" -arvo. "cdi" -objekti käyttää hyväkseen 
+     * @Transactional -annotaatiota.
+     */
+    private boolean testInsertandRetrieveCDI() {
+        @SuppressWarnings("unused")
         boolean result = false;
         SmokeEntity se = cdi.insert();
         SmokeEntity se2 = cdi.retrieve(se.getId());
         return Objects.equals(se.getId(), se2.getId());
     }
     
+    /**
+     * 2) Käytetään @ApplicationScoped -beania - "cdi".
+     * Luodaan 1000 uutta riviä, lasketaan, että rivejä on väh. 1000.
+     * Lopuksi poistetaan kaikki rivit ja katsotaan uudestaan, että
+     * rivejä on tasan 0. Jos kaikki SQL-kyselyt onnistuvat palautetaan
+     * "true" -arvo. "cdi" -objekti käyttää hyväkseen @Transactional -annotaatiota.
+     */
     private boolean testDeleteAllCDI() {
         boolean result = false;
         cdi.bulkLoad(1000);
@@ -159,6 +265,13 @@ public class SmokeTestJPA extends HttpServlet {
         return result;
     }
     
+    /**
+     * 2) Tässä komponentissa käytetään hyväksi @EJB-komponenttia - "ejb".
+     * Person -JPA-luokka sisältää relaatioita muihin "feikkitauluihin". 
+     * Tässä funktiossa testataan, että relaatiot toimivat eri JPA-luokkien välillä.
+     * Jos yhteydet toimivat keskenään, palautetaan "true" -arvo.
+     * 
+     */
     private boolean testRelations() {
         boolean result = false;
         Person fred = ejb.createFamily();
@@ -170,6 +283,13 @@ public class SmokeTestJPA extends HttpServlet {
         return result;
     }
     
+    /**
+     * 2) Tässä komponentissa käytetään hyväksi @EJB-komponenttia - "ejb".
+     * Aluksi poistetaan kaikki mahdolliset rivit taulusta. Tämän jälkeen ajetaan
+     * rollback() -funktio mikä lisää 1:n uuden rivin ja sitten käyttäen rollbackkia,
+     * ajaa sen pois. Lopuksi katsotaan, että taulussa olevien rivien määrä on vielä 0.
+     * Jos rivejä ei ole yhtään, palautetaan "true" -arvo.
+     */
     private boolean testRollback() {
         boolean result = false;
         ejb.deleteAll();
@@ -178,6 +298,16 @@ public class SmokeTestJPA extends HttpServlet {
         return result;
     }
     
+    /**
+     * 2) Käytetään @EJB-komponenttia - "bmejb". Kaikissa kyselyissä
+     * käytetään transaktionia.
+     * Aluksi poistetaan kaikki mahdollisit rivit taulusta. Tämän
+     * jälkeen meinataan lisätä 1 uusi rivi, mutta kutsutaankin @EJB-
+     * komponentin rollback() -funktiota mikä lopettaa transaktionin
+     * ja pyyhkii kaikki sen mukana tulleet muutokset pois, tarkoittaen
+     * että rivejä ei pitäisi löytyä yhtään. Jos rivejä ei lopussa löydy yhtään
+     * palautetaan arvo "true".
+     */
     private boolean testRollbackBMT() {
         boolean result = false;
         bmejb.deleteAll();
@@ -186,6 +316,13 @@ public class SmokeTestJPA extends HttpServlet {
         return result;
     }
     
+    /**
+     * 2) Käytetään @ApplicationScoped -beania - "cdi".
+     * Aloitetaan luomaan uutta riviä SQL-tauluun. Ennekuin riviä
+     * tallennetaan transaktionissa, heitetään uusi virhe (RollbackException),
+     * joka lopettaa tallennuksen eikä rivi tallennu tauluun. 
+     * "cdi" -objekti käyttää hyväkseen @Transactional -annotaatiota.
+     */
     private boolean testRollbackCDI() {
         boolean result = false;
         cdi.deleteAll();
@@ -197,43 +334,17 @@ public class SmokeTestJPA extends HttpServlet {
         return result;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

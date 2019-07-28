@@ -76,7 +76,9 @@ import fish.payara.examples.javaee.smoke.ejb.TestSingletonBean;
  * Sovellus tekee erilaisia injektioita tavallisiin- sekä enteprise -javabeaneihin. 
  * Servletissä kokeillaan myös eventin tekoa ja sen vuorovaikutusta beanien kanssa,
  * sekä executor-roolin, transaktionin, MySQL -palvelun injektoimista.
- * Mukana on myöskin parametrien sekä session -attribuuttien testailua.
+ * Mukana on myöskin parametrien sekä session -attribuuttien testailua. Servletin 
+ * templaatissa näiden beanien jne. funktioita sekä "olemassaoloja" kutsutaan, jotta
+ * nähdään, että jokainen tarvittava palvelu on injektoitu onnistuneesti.
  * 
  * Jotta sovellus toimisi normaalisti, pitäisi jokainen kutsu templaatissa
  * tulostaa "true" arvon. Injektiot määritellään tarkemmin itse koodissa.
@@ -93,7 +95,7 @@ import fish.payara.examples.javaee.smoke.ejb.TestSingletonBean;
  * @TrueInterceptor - Rajapinta, mikä muuttaa arvon ennen lähetystä esim. "false"=> "true".
  * 
  * @RequestScoped - Esim. bean, jonka tiedot on tallessa vain yhden pyynnön aikana. Tuhotaan pyynnön jälkeen.
- * @SessionScoepd - Esim. bean, jonka tiedot pysyvät tallessa yhden session aikana. Tuhotaan kun sessio loppuu.
+ * @SessionScoped - Esim. bean, jonka tiedot pysyvät tallessa yhden session aikana. Tuhotaan kun sessio loppuu.
  * @ApplicationScoped - Esim. bean, jonka tiedot pysyvät tallessa koko applikaation elinkierron aikana.
  */
 

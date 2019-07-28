@@ -52,18 +52,48 @@ import javax.transaction.Transactional;
 import javax.transaction.UserTransaction;
 
 /**
+ * 3) @ApplicationScoped -bean. EI @EJB-komponentti.
+ */
+
+/**
  *
  * @author Steve Millidge (Payara Foundation)
  */
 @ApplicationScoped
 public class TransactionalCDI {
-
+    
+    /**
+     * 2) EntityManagerilla pystymme tekemään erilaisia 
+     * tietokantatoimintoja tiettyyn tietokantaan. 
+     * @PersistenceContext -annotaatiolla otetaan persistence.xml 
+     * -tiedostossa olevaan yhteyteen MySQL -palvelimeen. Tämän 
+     * mukana annetaan halutun yhteyden nimi, jotta yhteys saadaan
+     * muodostettua.
+     */
     @PersistenceContext(name = "SmokeTestPU")
     private EntityManager entityManager;
-
+    
+    /**
+     * 2) UserTransaction -rajapinta kertoo metodeista, jotka sallivat applikaation 
+     * suorittaa ja ylläpitää transaktio -rajauksia.
+     */
     @Resource
     UserTransaction ut;
-
+     
+    
+    
+    /**
+     * 2) Alemmissa funktiossa käytetään @Transactional -annotiaatiota, jonka
+     * avulla voidaan kontrolloida esim. funktioiden transaktionia. Tämän takia
+     * esim. UserTransaction -rajapintaa ei tarvitse erikseen käyttää funktiossa,
+     * jotka halutaan tehdä transaktionilla. 
+     * 
+     * Transactional.TxType.REQUIRED -lisäasetus kertoo, että tarvittavat kyselyt 
+     * pitää suorittaa funktion sisällä, missä @Transactional -annotaatio on annettu.
+     * 
+     */
+    
+    
     @Transactional(Transactional.TxType.REQUIRED)
     public boolean bulkLoad(int howMany) {
         boolean result = true;

@@ -16,6 +16,17 @@ import javax.inject.Named;
 import fish.payara.examples.javaee.timersession.ejb.TimerSessionBean;
 
 /**
+ * 2) Tavallinen @SessionScoped -bean, joka nimetään timer-client.xhtml
+ * -applikaatiota varten, jotta ne voivat keskustella keskenään - @Named.
+ * 
+ * Tämä bean toimii viewin sekä @EJB-komponentin - TimerSessionBean, kanssa.
+ * Tähän beaniin injektoidaan @EJB-komponentti, joten tämä bean välittää ainoastaan
+ * tietoa takaisin viewin ja komponentin välillä. 
+ * 
+ * 3) Ei ole @EJB-komponentti.
+ */
+
+/**
  *
  * @author ian
  */
@@ -24,13 +35,21 @@ import fish.payara.examples.javaee.timersession.ejb.TimerSessionBean;
 public class TimerManager implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-
+	
+	/**
+	 * 3) Injektointi @EJB-komponentista. TimerSessionBean on
+	 * @Singleton -session-bean.
+	 */
 	@EJB
 	private TimerSessionBean timerSession;
 
 	private String lastProgrammaticTimeout;
 	private String lastAutomaticTimeout;
-
+	
+	/**
+	 * 2) Kun timer-client.xhtml -applikaatio ottaa ensimmäisen kerran
+	 * yhteyden tähän beaniin, luodaan alkuarvot luokan attribuuteille.
+	 */
 	/** Creates a new instance of TimerManager */
 	public TimerManager() {
 		this.lastProgrammaticTimeout = "never";
@@ -51,7 +70,12 @@ public class TimerManager implements Serializable {
 	public void setLastProgrammaticTimeout(String lastTimeout) {
 		this.lastProgrammaticTimeout = lastTimeout;
 	}
-
+	
+	/**
+	 * 2) Kun käyttäjä painaa "Set Timer" -nappia, kutsutaan tätä funktiota, joka
+	 * edelleen kutsuu timerSession @EJB-komponentin funktiota, joka luo viiveen
+	 * eli ns. timeoutin.
+	 */
 	public void setTimer() {
 		long timeoutDuration = 8000;
 		timerSession.setTimer(timeoutDuration);

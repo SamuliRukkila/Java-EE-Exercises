@@ -57,6 +57,13 @@ import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
 
 /**
+ * 3) @EJB-komponentti. Komponentti on @Stateless, joten se hävittää
+ * tehdyt muutokset/tiedot jokaisen requestin jälkeen. Komponentissa on myös
+ * määritelty, että ko. @EJB-komponentilla on "papu-hallitut" transaktionit, 
+ * "kontti-hallinta" transaktionin sijaan (@TransactionManagement).
+ */
+
+/**
  * An EJB using Bean Managed Transactions
  *
  * @author Steve Millidge (Payara Foundation)
@@ -64,13 +71,30 @@ import javax.transaction.UserTransaction;
 @Stateless
 @TransactionManagement(TransactionManagementType.BEAN)
 public class SmokeJPABMBean {
-
+    
+    /**
+     * 2) UserTransaction -rajapinta kertoo metodeista, jotka sallivat applikaation 
+     * suorittaa ja ylläpitää transaktio -rajauksia.
+     */
     @Resource
     UserTransaction ut;
-
+    
+    /**
+     * 2) EntityManagerilla pystymme tekemään erilaisia 
+     * tietokantatoimintoja tiettyyn tietokantaan. 
+     * @PersistenceContext -annotaatiolla otetaan persistence.xml 
+     * -tiedostossa olevaan yhteyteen MySQL -palvelimeen. Tämän 
+     * mukana annetaan halutun yhteyden nimi, jotta yhteys saadaan
+     * muodostettua.
+     */
     @PersistenceContext(name = "SmokeTestPU")
     private EntityManager entityManager;
-
+    
+    /**
+     * 2) Funktio, joka lisää parametrissa annetun määrän (howMany) rivejä tauluun.
+     * Tässä SQL-kyselihin käytetään transaktionia, eli muutokset tulevat voimaan 
+     * lopullisesti vasta, kun ut.commit() -funktiota kutsutaan.
+     */
     public boolean bulkLoad(int howMany) {
         boolean result = true;
         try {
@@ -89,7 +113,11 @@ public class SmokeJPABMBean {
         }
         return result;
     }
-
+    
+    /**
+     * 2) Funktio, joka lisää uuden rivin tauluun käyttäen transaktionia. Muutokset 
+     * tulevat voimaan lopullisesti vasta, kun ut.commit() -funktiota kutsutaan.
+     */
     public SmokeEntity insert() {
         SmokeEntity entity = new SmokeEntity();
         try {
@@ -105,11 +133,18 @@ public class SmokeJPABMBean {
         }
         return entity;
     }
-
+    
+    /**
+     * 2) Haetaan taulusta riviä ID:n perusteella
+     */
     public SmokeEntity retrieve(Long id) {
         return entityManager.find(SmokeEntity.class, id);
     }
-
+    
+    /**
+     * 2) Funktio, joka laskee kaikkien rivien määrän SmokeEntity -taulusta. 
+     * SQL-kysely lähetetään vasta kun ut.commit() -funktiota kutsutaan.
+     */
     public long countAll() {
         long result = -1;
         try {
@@ -123,6 +158,10 @@ public class SmokeJPABMBean {
         return result;
     }
 
+    /**
+     * 2) Funktio, joka poistaa kaikki rivit SQL-taulusta. SQL-kysely 
+     * lähetetään vasta kun ut.commit() -funktiota kutsutaan.
+     */
     public int deleteAll() {
         long result = -1;
         try {
@@ -135,7 +174,12 @@ public class SmokeJPABMBean {
         }
         return (int) result;
     }
-
+    
+    /**
+     * 2) Funktio, joka luo aluksi uuden rivin tauluun, mutta tallenna sitä vielä. Ennenkuin 
+     * riviä tallennetaan, kutsutaan ut.rollback() -mikä tuhoaa kyseessä olevan transaktionin
+     * kokonaan.
+     */
     public SmokeEntity rollBack() {
         SmokeEntity p = new SmokeEntity();
         try {

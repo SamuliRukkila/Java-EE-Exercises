@@ -46,6 +46,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
+ * 2) JPA -luokka, jossa luodaan taulu. Ainoa arvo, mitä tässä
+ * luokassa on annettu on taululle on ID (AUTO_INCREMENT).
+ * 
+ * 3) Ei @EJB -komponentti
+ */
+
+/**
  *
  * @author Steve Millidge (Payara Foundation)
  */
@@ -53,33 +60,32 @@ import javax.persistence.Id;
 public class SmokeEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
     private Long someNumber;
     private String data;
-
+    
+    /**
+     * 2) GETTERS JA SETTERS
+     */
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public Long getSomeNumber() {
         return someNumber;
     }
-
     public void setSomeNumber(Long someNumber) {
         this.someNumber = someNumber;
     }
-
     public String getData() {
         return data;
     }
-
     public void setData(String data) {
         this.data = data;
     }
