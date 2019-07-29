@@ -32,3 +32,10 @@ within the Servlet.
 
 In this assignment we'll download a ready-made set of applications in where we document all 6 of them. Applications
 consists of things like EJB, normal beans, injections, JPA, annotations in general and webservlets.
+
+Questions are:
+ 1. In which context/container does the applications work?
+ 2. Tell what's the principle of these programs, what do they do?
+ 3. Which are ```EJB``` -components and which aren't?
+ 4. What annotations (@) are used in the applications, what do they do?
+ 5. What's the principle of annotation?
