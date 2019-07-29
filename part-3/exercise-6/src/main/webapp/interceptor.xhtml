@@ -11,9 +11,30 @@
 
 <!-- 
 
- 1)
- 2)
+ 1) Tämä applikaatio toimii JSF:n facelettina, johon on yhdistetty 
+ @EJB-komponentti. Tämä tiedosto on itse view (=facelet), ja beanit logiikka,
+ minkä perusteella tämä facelet toimii niinkuin halutaan.
+ 
+ 2) Tässä applikaatiossa testataan yksinkertaista funktion keskeytystä 
+ (interceptor). Käyttäjä antaa nimen CAPS LOCK:lla. Tämä nimi viedään
+ @EJB-komponenttiin, HelloBean.java, jossa on SET-funktio. Tämä funktio
+ sisältää kuitenkin @Interceptors -annotaation, joten sen määräämän luokan
+ funktio suoritetaan ennen kuin tätä funktiota suoritetaan. Interceptorin
+ funktio muuttaa nimen pieniksi kirjaimiksi ennen palautusta. Lopuksi 
+ tavallinen funktio laittaa uuden nimen @EJB-komponentin attribuutteihin. 
+ Tämä uusi nimi tulee automaattisesti näkyviin käyttäjälle JSF:n AJAX:in 
+ ansiosta.
+ 
  4)
+ @Stateless - @EJB-komponentti, joka ei pidä sessiota yllä requestien välillä
+ @Named - Named bean, joka voidaan helposti yhdistää JSF:n faceletin kanssa
+ @Interceptors(luokka_joka_yhdistetään) - Jos annettu funktiolle, ei suorita
+  funktion toimintoja ennenkuin kuin se on suorittanut @Interceptors -annotaation
+  antaman luokan funktion.
+ @AroundInvoke - Suoritetaan, jos toiseen luokkaan/funktioon on annettu @Interceptors
+  -annotaatio. Tämä annotaatio etsii @AroundInvoke -annotaation ja suorittaa sen
+  funktion sisältämän koodin ennenkuin palaa takaisin alkup. funktioon (vain 1 
+  @AroundInvoke -funktio per luokka).
 
  -->
 

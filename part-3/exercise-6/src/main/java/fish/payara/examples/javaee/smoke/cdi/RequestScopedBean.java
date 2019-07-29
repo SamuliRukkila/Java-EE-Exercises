@@ -45,7 +45,7 @@ import javax.enterprise.context.RequestScoped;
  * 2) @RequestScoped -bean. Pysyy siis päällä vain yhden requestin
  * ajaksi.
  * 
- * 4) Kyseessä tavallinen requestscoped bean. Ei @EJB
+ * 3) Kyseessä tavallinen requestscoped bean. Ei @EJB
  */
 
 /**

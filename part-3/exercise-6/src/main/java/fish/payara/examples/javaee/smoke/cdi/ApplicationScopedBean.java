@@ -74,7 +74,9 @@ public class ApplicationScopedBean {
     
     /**
      * 4) Tätä annotiaatiota käytetään yhdistämään interface tämän
-     * funktion kanssa. Muuttaa "false" arvon palautuksen "true" -arvoksi.
+     * funktion kanssa. Samaan @TrueInterceptor -rajapintaa on lisätty myös
+     * toinen tiedosto (TrueInterceptorImpl), joka on @Interceptor, se muuttaa
+     * "false" -arvon arvoksi "true" ennen palautusta.
      */
     @TrueInterceptor
     public Boolean returnFalse() {

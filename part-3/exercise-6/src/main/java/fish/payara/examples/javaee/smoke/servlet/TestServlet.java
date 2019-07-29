@@ -73,7 +73,7 @@ import fish.payara.examples.javaee.smoke.ejb.TestSingletonBean;
  * määritellään nimineen ja arvoineen tämän jälkeen @WebInitParam -määritelmässä
  * (parametreja ei siis itse tarvitse tuoda tähän servlettiin). 
  * 
- * Sovellus tekee erilaisia injektioita tavallisiin- sekä enteprise -javabeaneihin. 
+ * 2) Sovellus tekee erilaisia injektioita tavallisiin- sekä enteprise -javabeaneihin. 
  * Servletissä kokeillaan myös eventin tekoa ja sen vuorovaikutusta beanien kanssa,
  * sekä executor-roolin, transaktionin, MySQL -palvelun injektoimista.
  * Mukana on myöskin parametrien sekä session -attribuuttien testailua. Servletin 

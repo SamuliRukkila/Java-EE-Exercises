@@ -18,6 +18,16 @@ import javax.interceptor.AroundInvoke;
 import javax.interceptor.InvocationContext;
 
 /**
+ * 2 & 3) @EJB-komponentti, jonka ainoa tarkoitus on keskeyttää HelloBean -
+ * luokassa oleva setName() -funktio, jossa tallennetaan käyttäjän nimi
+ * luokan attribuuttiin. Edelläolevaan funktioon ollaan annettu annotaatio
+ * @Interceptors, jossa otetaan yhteys tähän luokkaan. Tästä luokasta
+ * etsitään @AroundInvoke -annotaatio (vain yksi tälläinen annotaatio per 
+ * luokka) ja suoritetaan sen sisällä oleva koodi ja palautetaan se 
+ * ennenkuin se tekemät muutokset palautetaan takaisin.
+ */
+
+/**
  *
  * @author ian
  */
@@ -27,7 +37,19 @@ public class HelloInterceptor {
 
 	public HelloInterceptor() {
 	}
-
+	
+	/**
+	 * 2) Tämä suoritetaan @Interceptors -annotaation avulla toisessa funktiossa.
+	 * Näitä annotaatioita saa vain olla 1 per luokka. 
+	 * 
+	 * Luokka ottaa vastaan InvocationContext -olion joka kertoo tarvittavia 
+	 * tietoja keskeytetystä funktiosta. Olion parametreista otetaan nimi
+	 * vastaan ja muutetaan se CAPS LOCK:sta pieniin kirjaimiin. Lopuksi 
+	 * muokattu nimi -parametri pistetään takaisin olion parametriin ja kutsutaan
+	 * ctx:n funktiota - proceed(), joka jatkaa seuraavaan keskeyttäjään 
+	 * (interceptor) tai jos niitä ei ole, palaa takaisin funktioon muokatuilla
+	 * arvoilla.
+	 */
 	@AroundInvoke
 	public Object modifyGreeting(InvocationContext ctx) throws Exception {
 		Object[] parameters = ctx.getParameters();

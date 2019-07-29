@@ -17,6 +17,13 @@ import javax.inject.Named;
 import javax.interceptor.Interceptors;
 
 /**
+ * 2 & 3) @EJB-komponentti, joka toimii viewin sekä Interceptor -luokan kanssa.
+ * Muokkaa käyttäjän nimen CAPS LOCKISTA pieniin kirjaimiin. Toimii siis
+ * tämän välissä. Tämä bean on myös varustettu @Named -annotaatiolla, jotta
+ * tiedetään, että se keskustelee JSF:n faceletin (interceptor.xhtml) kanssa.
+ */
+
+/**
  *
  * @author ian
  */
@@ -34,7 +41,15 @@ public class HelloBean {
 	public String getName() {
 		return name;
 	}
-
+	
+	/**
+	 * 2) Tämä name -attribuutin SET-funktio sisältää @Interceptors -annotaation,
+	 * eli ennenkuin funktion koodi ajetaan, viedään tullut parametri sekä muu
+	 * tieto annotaation mukana siinä määritettyyn luokkaan (HelloInterceptor).
+	 * Kun Interceptor -luokan @AroundInvoke -annotaation omaava funktio on 
+	 * suoritettu, palautuu se takaisin tähän funktioon ja se suoritetaan 
+	 * normaaliin tapaan loppuun.
+	 */
 	/**
 	 * Set the value of name
 	 *
