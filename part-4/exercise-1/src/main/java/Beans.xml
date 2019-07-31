@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd ">
+      
+  <bean id="customer" class="com.bank.Customer">
+    <constructor-arg ref="account"/>
+  </bean>
+  
+  <!-- Account 1 -->
+  <!--<bean id="account" class="com.bank.Account1">
+    <property name="id" value="1234KF-103FOV"/>
+    <property name="balance" value="2000"/>
+  </bean>-->  
+  
+   <!-- Account 2 -->
+   <bean id="account" class="com.bank.Account2">
+    <property name="id" value="1594TQ-10GEOV"/>
+    <property name="balance" value="11000"/>
+  </bean>
+  
+  
+  <bean id="timelogger" class="com.bank.TimeLogger">
+    <constructor-arg ref="account"/>
+  </bean>
+  
+  <aop:config>
+    <aop:aspect ref="timelogger">
+      <aop:pointcut id="depositMoney" 
+        expression="execution(* *.customerDepositMoney(..))"/>
+      <aop:pointcut id="withdrawMoney" 
+        expression="execution(* *.customerWithdrawMoney(..))"/>
+      <aop:after pointcut-ref="depositMoney" method="moneyDeposited"/>
+      <aop:after pointcut-ref="withdrawMoney" method="moneyWithdrawed"/>      
+    </aop:aspect>
+  </aop:config>
+      
+</beans>
