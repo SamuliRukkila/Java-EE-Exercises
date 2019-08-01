@@ -6,35 +6,58 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/aop 
         http://www.springframework.org/schema/aop/spring-aop-4.0.xsd ">
-      
+  
+  <!-- XML -configuration-file where we'll define aspects and beans -->
+  
+  <!-- Definition for Customer -bean  -->
   <bean id="customer" class="com.bank.Customer">
+    <!-- Add constructor argument for this bean with Account-bean's ID -->
     <constructor-arg ref="account"/>
   </bean>
   
-  <!-- Account 1 -->
-  <!--<bean id="account" class="com.bank.Account1">
+  
+  <!-- 
+    Comment/uncomment one of below blocks 
+    for different accounts 
+  -->
+  
+  <!-- Definition for the Account1 -bean -->
+  <!--<bean id="account" class="com.bank.Account1">'
     <property name="id" value="1234KF-103FOV"/>
     <property name="balance" value="2000"/>
   </bean>-->  
   
-   <!-- Account 2 -->
+   <!-- Definition for the Account2 -bean -->
    <bean id="account" class="com.bank.Account2">
     <property name="id" value="1594TQ-10GEOV"/>
     <property name="balance" value="11000"/>
   </bean>
   
   
+  <!-- Definition of the AOP-bean - TimeLogger -->
   <bean id="timelogger" class="com.bank.TimeLogger">
+    <!-- Add constructor argument for this bean with Account-bean's ID -->
     <constructor-arg ref="account"/>
   </bean>
   
+  
+  <!-- Configuration of the AOP-bean -->
   <aop:config>
+    <!-- Make aspect from the TimeLogger -bean -->
     <aop:aspect ref="timelogger">
+      <!-- This element will monitor when function .customerDepositMoney() 
+        -function will be executed anywhere in the Spring -app -->
       <aop:pointcut id="depositMoney" 
         expression="execution(* *.customerDepositMoney(..))"/>
+      <!-- This element will monitor when function .customerDepositMoney() 
+        -function will be executed anywhere in the Spring -app -->
       <aop:pointcut id="withdrawMoney" 
         expression="execution(* *.customerWithdrawMoney(..))"/>
+      <!-- Fire TimeLogger's function when pointcut-refered element 
+        is true (depositMoney) -->
       <aop:after pointcut-ref="depositMoney" method="moneyDeposited"/>
+      <!-- Fire TimeLogger's function when pointcut-refered element 
+        is true (withdrawMoney)-->
       <aop:after pointcut-ref="withdrawMoney" method="moneyWithdrawed"/>      
     </aop:aspect>
   </aop:config>
