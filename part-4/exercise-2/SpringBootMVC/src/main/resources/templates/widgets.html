@@ -1,0 +1,72 @@
+<!--
+ 
+ Mistä komponenteista muodostuvat model, view ja controller?
+ -----------------------------------------------------------
+ = VIEW 
+ ------
+ 
+ Widgets -templaatti toimii applikaation kotisivuna, joka näyttää
+ kaikki avoinna olevat widgetit tietokannassa/taulussa. Kun tämä 
+ sivu avataan netissä ("localhost:8080/widgets"), kutsutaan 
+ WidgetController -kontrollerin funktiota, joka taasen kutsuu 
+ WidgetRepositoryn findAll() -funktiota ja laittaa kaikki löytyneet
+ widgetit "widgets" attribuuttiin, joka on kiinni Model -objektissa. 
+ 
+ 
+ 
+ Thymeleaf ratkaisee <th:href> ja <th:src> -määritteet todellisiin URI
+  -polkuihin sovelluksessa ja ne korvaavat normaalit "href" ja "src" 
+  -määritteet kun sivu renderöidään. 
+ 
+ -->
+
+<!DOCTYPE html>
+<!-- Thymeleaf -templaatit tuodaan HTML -tagin kanssa. -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title>Widgets</title>
+  <link href="../static/css/bootstrap.min.css" th:href="@{css/bootstrap.min.css}" rel="stylesheet">
+</head>
+  <body>
+    <div class="container">
+      <h2>Widgets</h2>
+      <table class="table">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>View</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+        <!-- Thymeleaf -kirjaston tapa loopata kaikki löydetyt widgetit.
+        Se hakee "widgets" -taulukon Modelista ja pistää jokaisen arvon
+        lokaaliin muuttujaan.  -->
+        <tr th:each="widget : ${widgets}">
+          <td th:text="${widget.id}">Widget ID</td>
+          <td th:text="${widget.name}">Widget Name</td>
+          <td th:text="${widget.description}">Widget Description</td>
+          <!-- Mahdollistaa arvojen näyttämisen, muokkauksen sekä poistamisen. 
+          Jokainen näistä kutsuu URLia, mikä vie samalla valitun widgetin ID:n
+          mukana parametrina. Kontrollerissa katsotaan vastaava URL, ja renderöidään
+          käyttäjälle vastaava templaatti. -->
+          <td><a class="btn btn-default" href="#"
+            th:href="${'/widget/' + widget.id}">View</a></td>
+          <td><a class="btn btn-default" href="#"
+            th:href="${'/widget/edit/' + widget.id}">Edit</a></td>
+          <td><a class="btn btn-default" href="#"
+            th:href="${'/widget/delete/' + widget.id}">Delete</a></td>
+        </tr>
+      </table>
+      <!-- Mahdollisuus luoda uusi rivi tietokantaan. Kutsuu kontrollerin vastaavaa
+      URL -funktiota, joka määrittää renderöidyn templaatin. -->
+      <a th:href="${'/widget/new'}" class="btn btn-default">New</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="../static/js/bootstrap.min.js" th:src="@{js/bootstrap.min.js}"></script>
+  </body>
+</html>
+
+
+
