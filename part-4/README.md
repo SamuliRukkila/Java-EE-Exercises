@@ -6,9 +6,16 @@ In this assignment we'll create a simple application where we demonstrate deposi
 from the account. We'll using loose dependency injection for the relationships between beans and AOP-bean
 to log different actions in an outside module.
 
-### #2 --
+### #2 Spring MVC (Spring Boot) -tutorial
 
-### #3 --
+In this assignment we'll create a simple Spring MVC -application from the guide. We'll create traditional layers
+like view, service and controller (repository). The main task in this tutorial is to answer some of the asked 
+questions (I've answered for them in the code via comment-blocks).
+
+### #3 Spring Transaction -tutorial
+
+In this assignment we'll create a simple Spring MBC -application where emphasis is to try Spring's ```@Transactional``` -annotation. We'll create a simple bank-account -interface where one can send money to another's account. The main task
+in this tutorial is to answer some of the asked questions (I've answered for them in the code via comment-blocks).
 
 ### #4 -- 
 
