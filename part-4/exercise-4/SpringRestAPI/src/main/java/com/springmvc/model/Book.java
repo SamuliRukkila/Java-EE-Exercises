@@ -11,20 +11,39 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * JPA-class which is specified as an entity. It's 
+ * like the blueprint for the MySQL-table "book".
+ * Enables ORM-queries in this application.
+ * 
+ * We'll specify exact SQL-table's name with the
+ * @Table -annotation.
+ * 
+ * @author samuli
+ */
 @Entity
 @Table(name = "book")
 public class Book implements Serializable {
 
   private static final long serialVersionUID = 1L;
   
-  @ManyToOne
-  @JoinColumn(name = "bookgroup_id", nullable = false)
+  /**
+   * Add optional injection to this JPA-class (Bookgroup).
+   * (Many books can be placed into one book-group).
+   */
+  @ManyToOne(optional = true)
+  @JoinColumn(name = "bookgroup_id", nullable = true)
   private Bookgroup bg;
   
+  /**
+   * Primary key with AUTO_INCREMENT -attribute.
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "book_id")
   private Integer id;
+  
+  /* OTHER TABLE ATTRIBUTES */
   
   @Column(name = "title")
   private String title;

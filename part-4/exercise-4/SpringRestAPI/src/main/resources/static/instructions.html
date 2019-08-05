@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Rest-API Kyselyt</title>
+    <style>
+      body {
+        padding: 20px;
+        font-family: Arial;
+      }
+    </style>
+  </head>
+  <body>
+  
+    <h1>Rest-API Kyselyt</h1>
+    <hr>
+    
+    <h2>Kirjat:</h2>
+    
+    <b>(URL-osoite: localhost:8080/api/book/)</b>
+    
+    <p><u>Hae kaikki kirjat:</u></p>
+    <b><code>(GET) localhost:8080/api/book/</code></b>
+    
+    <p><u>Hae kirja ID:n perusteella:</u></p>
+    <b><code>(GET) localhost:8080/api/book/{{id}}</code></b>
+    
+    <p><u>Lisää kirja:</u></p>
+    <b><code>(POST) localhost:8080/api/book/{{kirjaryhmän_id}}</code></b>
+    
+    <pre><code>
+{
+    "title": "{{ Kirjan nimi }}",
+    "author": "{{ Kirjan kirjoittaja }}"
+}
+    </code></pre>
+    
+    <p><u>Päivitä kirja:</u></p>
+    <b><code>(PUT) localhost:8080/api/book/{{kirjan_id}}</code></b>
+    
+    <pre><code>
+{
+    "title": "{{ Kirjan nimi }}",
+    "author": "{{ Kirjan kirjoittaja }}",
+    "bookgroup": {
+    	"id": {{ uuden_kirjaryhmän_id }}
+    }
+}
+    </code></pre>
+    
+    <p><u>Poista kirja:</u></p>
+    <b><code>(DELETE) localhost:8080/api/book/{{kirjaryhmän_id}}</code></b>
+    <hr style="margin-top: 20px">
+    
+    <h2>Kirjaryhmät:</h2>
+    
+    <p><u>Hae kaikki kirjaryhmät:</u></p>
+    <b><code>(GET) localhost:8080/api/bookgroup</code></b>
+    
+    <p><u>Hae kirjaryhmä ID:n perusteella:</u></p>
+    <b><code>(GET) localhost:8080/api/bookgroup/{{id}}</code></b>
+    
+    <p><u>Lisää kirjaryhmä:</u></p>
+    <b><code>(POST) localhost:8080/api/bookgroup</code></b>
+    
+    <pre><code>
+{
+    "name": "{{ kirjaryhmän_nimi }}",
+}
+    </code></pre>
+    
+    
+    <p><u>Päivitä kirjaryhmä:</u></p>
+    <b><code>(PUT) localhost:8080/api/bookgroup/{{id}}</code></b>
+    
+    <pre><code>
+{
+    "name": "{{ kirjaryhmän_nimi }}",
+}
+    </code></pre>
+    
+    <p><u>Poista kirjaryhmä (poistaa myös ryhmään liittyvät kirjat):</u></p>
+    <b><code>(DELETE) localhost:8080/api/bookgroup/{{id}}</code></b>
+    
+  </body>
+</html>
