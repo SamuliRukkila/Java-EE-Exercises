@@ -127,6 +127,7 @@ public class BookGroupController {
   public ResponseEntity<?> deleteBook(@PathVariable (value = "id") Integer id) 
       throws ResourceNotFoundException {
     
+    // Use repo's native SQL-query to delete all books which has provided bookgroup ID
     bookRepo.deleteBooksByBookgroupId(id);
     
     return bgRepo.findById(id).map(bg -> {
