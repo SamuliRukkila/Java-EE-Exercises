@@ -2,6 +2,15 @@ package com.springwebflux.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+/**
+ * Dokumentti MongoDB-tietokannalla. Kertoo dokumentin struktuurin.
+ * 
+ * @Document -annotaatio, jolla kerrotaan, että kyseinen luokka
+ * on MongoDB:n dokumentti eli se tunnistaa MongoDB:lle pysyvän 
+ * verkkotunnusobjektin.
+ * 
+ * @author samuli
+ */
 @Document
 public class Book {
   

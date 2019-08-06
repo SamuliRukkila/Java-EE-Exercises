@@ -5,6 +5,10 @@ import com.springwebflux.model.Book;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * Rajapinta, minkä avulla voit käyttää MongoDB:n
+ * valmiiksi määriteltyjä kyselyitä kantaan.
+ */
 public interface BookService {
   
   Mono<Book> findById(String id);
