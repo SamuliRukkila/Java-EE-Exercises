@@ -1,0 +1,21 @@
+Millaisia monoliittisovelluskehityksen ongelmia mikropalvelut pyrkivät ratkaisemaan? 
+------------------------------------------------------------------------------------
+
+
+
+Millaisia haasteita mikropalveluarkkitehtuurin kehittämiseen liittyy? 
+---------------------------------------------------------------------
+
+
+
+
+Mitä tutoriaalin sovellus tekee ja millainen on sen arkkitehtuuri? 
+------------------------------------------------------------------
+
+
+
+
+Mikä on Feign clientin, Load balancerin ja Naming servicen merkitys arkkitehtuurissa?
+-------------------------------------------------------------------------------------
+
+
