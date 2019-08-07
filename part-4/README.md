@@ -17,12 +17,16 @@ questions (I've answered for them in the code via comment-blocks).
 In this assignment we'll create a simple Spring MVC -application where emphasis is to try Spring's ```@Transactional``` -annotation. We'll create a simple bank-account -interface where one can send money to another's account. The main task
 in this tutorial is to answer some of the asked questions (I've answered for them in the code via comment-blocks).
 
-### #4 Spring Rest-API
+### #4 Spring REST-API
 
 In this assignment we'll create a simple Rest-API using Spring MVC + JPA (Hibernate). In this program one can perform
 CRUD-operations on books and bookgroups. Additionally all endpoints are secured expect GET-requests.
 
-### #5 --
+### #5 Spring WebFlux
+
+In this assignemnt we'll create a simple Spring Boot WebFlux -application via this [guide](https://www.javaworld.com/article/3288219/mastering-spring-framework-5-part-2-spring-webflux.html). We'll 
+be using reactive MongoDB -driver to make it possible. Main emphasis is on answering couple of questions which
+are in the comments in the source-code.
 
 ### #6 --
 
