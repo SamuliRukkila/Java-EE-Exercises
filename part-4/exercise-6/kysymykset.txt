@@ -1,21 +1,175 @@
+=====================
+ A)    
+=====================
+
 Millaisia monoliittisovelluskehityksen ongelmia mikropalvelut pyrkivät ratkaisemaan? 
 ------------------------------------------------------------------------------------
 
+- skaalautuvuus
+- innovoinnin haasteet
+- normaalissa monoliittiapplikaatiossa yksi applikaatio olisi vastuussa kaikesta.
+Mikropalvelun arkkitehtuurissa yhden applikaation palvelut jakautuisivat omiksi,
+pieneksi palveluiksi, jotka hoitaisivat pieniä tehtäviä käyttäen hyväkseen
+jopa omaa instanssia tietokannasta. Nämä kommunikoisivat keskenään viesteillä
+- parempi debuggaus kun palvelut on hajautettu
+- uusien teknologien tuonti helpompaa
+- parempi (automaatio)testaus
 
 
 Millaisia haasteita mikropalveluarkkitehtuurin kehittämiseen liittyy? 
 ---------------------------------------------------------------------
 
+- Nopea kehittäminen; mikropalvelut tulisi kehittää nopeasti
+- Automaatio; koska mikropalvelu-arkkitehtuurisa komponentteja on monta,
+kaikki pitää automatisoida, kuten buildit, rakennus, monitorointi jne.
+- Näkyvyys; koska sinulla on monta komponenttia, sinun pitäisi helposti
+monitoroida kaikkia ja tunnistaa ongelmat automaattisesti
+- Konfigurointi-hallinta; kaikkien mikropalveluiden komponentteja pitäisi
+konfiguroida tarpeen mukaan
+- Debuggaus; kun löydät ongelman, joka tarvitsee tutkimista, sinun pitää
+tutkia monia palveluita eri komponenteissa, ennenkuin löydät vian
 
 
+Mitä tutoriaalin sovellus tekee? 
+--------------------------------
 
-Mitä tutoriaalin sovellus tekee ja millainen on sen arkkitehtuuri? 
-------------------------------------------------------------------
+Tutoriaali sovelluksen on tarkoitus opettaa käyttäjä mikropalveluiden
+peruskäyttöön käyttäen hyväkseen Spring Boottia. Sovelluksessa voit
+antaa URL-reittiin parametreja, kuten valuutat, joiden välillä haluavat
+tehdä valuutan muutoksen sekä määrän. Palvelut palauttavat JSON-muodossa
+metatietoja, kuten valuutanvaihto-määrän. 
+
+Sovellus luo pari mikropalvelua, jotka saadaan puhumaan keskenään 
+käyttämällä Eureka Naming Server -palvelua. Ribbonia käytetään
+asiakaspuolen kuorman tasapainottamiseen.
+
+Forex-palvelu FS (SpringMicroServiceForex) on palveluntarjoaja. Se tarjoaa 
+valuutanvaihtoarvot eri valuutoille. Se lisää H2-tietokantaan staattisesti
+valuutanvaihto-arvot, joita voidaan käyttää HTTP-kyselyissä. Voimme luoda
+uusia toimivia instansseja tästä palveluntarjoajasta, jotka lajitellaan 
+tasaisesti kyselyitten perusteella
+
+Valuutanmuutospalvelu CCS (SpringCurrencyConversion) voi muuntaa kasan valuuttaa
+toiseen valuuttaan. Se käyttää yllä mainittua Forex-palvelua saadakseen nykyiset
+valuutanvaihtoarvot. CCS on mikropalvelujen palvelukäyttäjä (service consumer).
+Nämä saadaan puhumaan keskenään käyttämällä Eureka Naming Server -palvelua.
+
+Ribbonin avulla saamme jaettua kuorman Forex-palvelun kahden esiintymän välillä, 
+mutta tällä hetkellä jokainen uusi instanssi, jonka käynnistämme porteittain, 
+pitää lisätä erikseen konfiguraatio-tiedostoon (application.properties). Jotta tätä
+ei tarvitse tehdä, käytämme Eureka Naming Server -palvelua hyväkseen, joka tekee
+sen dynaamisesti ja automaattisesti. Luomme ENS -palvelun (SpringEurekaNamingServer).
+Se on normaali Spring Boot -applikaatio, joka toteuttaa bootstrap-tiedostossa
+@EnableEurekaServer -instanssin. application.properties -sisältää tarvittavat
+metatiedot yhdistämiseen.
+
+Lopuksi lisäämme kahteen aikasempaan projektiin Eureka Client -kirjastot, ja
+määrittelemme Eureka Serverin osoitteen, johon yhdistetään.
 
 
+Millainen on sen arkkitehtuuri?
+-------------------------------
+
+Forex-palvelu = mikropalvelun tarjoaja (service producer)
+Valuuntanmuutospalvelu = mikropalvelujen käyttäjä (service consumer)
+Nimeämispalvelu Eureke = pitää yllä kaikki sen löytyviä palveluita, ja mahdollistaa
+ niitten välillä olevan keskustelun helposti
+
+-------------------  ------------------ ------------------  ---------- 
+| CCS-instanssi 1 |  | FS-instanssi 1 | | FS-instanssi 2 |  | Eureka |
+-------------------  ------------------ ------------------  ----------
+
+- Eureka rekisteröi instanssin kaikista olevista palveluista itseensä, jotta
+ palvelut voivat keskustella keskenään dynaamisesti ilman kovakoodattuja osoitteita
+- CCS-instanssi pyytää FS-instanssista oman instanssin, jota se voi käyttää
+- Kun käyttäjä tekee HTTP-pyynnön CCS-instanssiin, kutsutaan kontrollerissa
+ proxyn avulla FS-instanssin metodia, joka hakee valuutanmuutos-kurssit.
+- Kun CCS-instanssi on valmis, se palauttaa arvot JSON-muodossa metatietoineen
+- Ribbon on palveluissa päällä varmistaen kuorman jakamisen palveluiden välillä
 
 
 Mikä on Feign clientin, Load balancerin ja Naming servicen merkitys arkkitehtuurissa?
 -------------------------------------------------------------------------------------
 
+- Feign client
+	Feign clienttiä käytetään yksinkertaiseen REST-palveluun, jonka avulla voimme
+	kutsua helposti Forex -mikropalvelua. Feign on deklaratiivinen verkkopalvelu-
+	client. @FeignClient -annotaation käyttö rajapinnassa kertoo Springille, että
+	REST-client, jolla on kyseinen rajapinta, pitäisi luoda (esim. autowiretys
+	toisen komponenttiin)
 
+- Load balancer
+	Kyseissä mikropalvelu-arkkitehtuurissa käytämme load balancerina Ribbonia.
+	Normaalisti kun esim. uusia instansseja luodaan mikropalveluista, meillä ei
+	olisi minkäänlaista tapaa jakaa kuormaa instanssien kesken. Kun lisäämme
+	Ribbonin esim SpringCurrencyConversionin proxy-rajapintaan, jakaa Ribbon
+	automaattisesti kuorman kahden luodun instanssin välillä. 
+
+- Naming service
+	Jos naming serviceä ei käytettäisi, meidän pitäisi kovakoodata kaikkien
+	mikropalvelujen instassit (portit) koodiin. Käytämme naming serviceä,
+	Eurekaa, tähän tarkoitukseen. Kun teemme uuden projektin, ja luomme
+	siitä Eureka Serverin, voimme helposti yhdistää tarvittavat mikropalvelujen
+	tuottajat sekä käyttäjät keskenään lisäämällä niille Eureka Clientin 
+	-kirjaston sekä lisäämällä tarvittavat metatiedot niihin. Pyynnöt
+	esim CCS-palvelunkäyttäjään jakautuisivat nyt automaattisesti kahden
+	Forexin-mikropalvelun instanssin kanssa Eurekan avulla.
+
+
+
+=====================
+ B)    
+=====================
+
+Mikä on Gatewayn merkitys?
+--------------------------
+
+Kun laitamme mikropalvelu-arkkitehtuurissa monia instansseja päälle, jokaiselle
+tulee omat porttinumerot. Hankaloituminen tapahtuu kun järjestelmä on netissä,
+miten voimme kerätä kaikki palvelut, jotka ovat eri porteissa ympäri nettiä?
+Käytämme porttien yhdistämiseen yhteen pääsypisteeseen Zuul-kirjastoa.
+
+Gateway on yksittäinen pääsypiste (entrypoint) järjestelmään, jota käytetään
+käsittelemään pyyntöjä ohjaamalla ne vastaavaan palveluun (voidaan käyttää
+myös autentikoitumiseen, monitorointiin jne.).
+
+Gateway, Zuul, myös käyttää Ribbonia kuorman tasaamiseen instanssien välillä. Zuul
+toimii Eurekan yhtenä clienttinä.
+
+
+Mitä mikropalveluarkkitehtuuriin kuuluvia ominaisuuksia sovelluksesta vielä puuttuu?
+------------------------------------------------------------------------------------
+
+Katsomalla B) -osion tutoriaalin arkkitehtuuria, meiltä puuttuisi vielä seuraavia
+ominaisuuksia:
+
+- Autentikointi 
+	Kaikki käyttäjät eivät voisi päästä käsiksi jokaiseen palveluun, vaan
+	he tarvitsisivat autentikoida itsensä ennen sitä
+
+- Palveluiden katkaisija (Circuit Breaker) 
+	Palvelun pääideana on lopettaa
+	rikkoutumisongelmat epäonnistumalla nopeasti ja toipua mahdollisimman nopeasti. 	
+	Myöskin tärkeiden vikasietoisten järjestelmien "itseparantuminen" on tärkeää.
+
+- Lokin jäljitys (Log Tracing) 
+	Mikropalvelujen lukumäärän kasvaessa, etenevien 
+	pyyntöjen jäljittäminen, selvittäminen sekä tietoa kuinka pyynnöt kulkevat 
+	sovelluksen läpi voi olla hankalaa. Log Tracing -palveluiden tarkoitus 
+	mahdollistaa pyyntöjen jäljittäminen lisäämällä lokiin yksilöivät tunnukset.
+
+- Lokien järjestely (esim. ELK Stack)
+	ELK-stack muodostuu kolmesta eri palvelusta: 1) LOGSTASH - hallitsee lokia, sekä
+	tukee visuaalisesti kaikkia lokeja (error, normal jne.) 2) ELASTICSEARCH - 
+	reaaliaikainen haku- ja analytiikka-työkalu. 3) KIBANA - Webissä tomiva
+	graafinen käyttöliittymä lokien etsintään, analysointiin sekä visuaalisointiin. 
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------

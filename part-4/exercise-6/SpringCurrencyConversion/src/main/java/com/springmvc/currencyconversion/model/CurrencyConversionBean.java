@@ -2,6 +2,13 @@ package com.springmvc.currencyconversion.model;
 
 import java.math.BigDecimal;
 
+/**
+ * Tavallinen bean, joka pitää sisällään vastausta, minkä
+ * haluamme palauttaa kyselyn lähettäjälle.
+ * 
+ * Sisältää kaikki tarvittavat attribuutit vastauksen
+ * lähettämiseen.
+ */
 public class CurrencyConversionBean {
 
   private Long id;

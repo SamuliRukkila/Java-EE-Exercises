@@ -6,6 +6,18 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+/**
+ * Normaali JPA:n luokka, joka toimii entitynä. Tarjoaa
+ * valuutanvaihtoon tarvittavat attribuutit sekä metatiedot,
+ * kuten portti, jota käytetään devausvaiheessa.
+ * 
+ * Projektissa on mukana H2-tietokantakirjasto, jonka ansioista
+ * meidän ei itse tarvitse tuottaa tietokantaa tätä demoa varten.
+ * 
+ * Projekti sisältää myös valmiin SQL-skriptin mikä luo valmiiksi
+ * valuutanvaihto-kursseja.
+ */
+
 @Entity
 public class ExchangeValue {
 

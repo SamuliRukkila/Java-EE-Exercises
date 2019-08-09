@@ -16,15 +16,30 @@ import org.springframework.web.client.RestTemplate;
 import com.springmvc.currencyconversion.model.CurrencyConversionBean;
 import com.springmvc.currencyconversion.proxy.CurrencyExchangeServiceProxy;
 
+/**
+ * Normaali REST-kontrolleri, joka toteuttaa muutaman
+ * GET-funktion. 
+ */
 @RestController
 public class CurrencyConversionController {
   
+  // Automaattisesti injektoi proxy-palvelu
   @Autowired
   private CurrencyExchangeServiceProxy proxy;
-  
+  // Haluttujen tietojen loggaus konsoliin
   private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-  
+  /**
+   * Normaali tapa, jolla voidaan olla yhteydessä Forex-palveluun. Kun tätä funktiota
+   * kutsutaan, se kutsuu Forex-palvelun GET-kyselyä, mikä tuottaa valuutanvaihtoarvon.
+   * Kun arvo sekä portti palautuu. Se luo vastauksen käyttämällä CurrencyConversinBean 
+   * -beania, jonka se palauttaa.
+   * 
+   * @param from - Mistä valuutasta käännetään
+   * @param to - Mihin valuuttaan käännetän
+   * @param quantity - Rahamäärä, mikä käännetään
+   * @return - Vastaus mikä kertoo kaikki metatiedot kyselystä, sekä valuutanvaihtoarvon sekä määrän
+   */
   @GetMapping("/currency-converter/from/{from}/to/{to}/quantity/{quantity}")
   public CurrencyConversionBean convertCurrency(@PathVariable String from, @PathVariable String to,
       @PathVariable BigDecimal quantity) {
@@ -44,7 +59,16 @@ public class CurrencyConversionController {
   }
   
   
-  
+  /**
+   * Feignin tapa tehdä REST-kysely ylemmän sijaan. Se kutsuu repositoryä, joka tekee Feignin avulla REST-kyselyn
+   * Forex-mikropalveluun. Palautetut tiedot laitetaan väliaikaisesti CurrencyConversionBean -objektiin. Lopuksi
+   * luomme uuden bean-objektin, joka palautetaan käyttäjälle.
+   * 
+   * @param from - Mistä valuutasta käännetään
+   * @param to - Mihin valuuttaan käännetän
+   * @param quantity - Rahamäärä, mikä käännetään
+   * @return - Vastaus mikä kertoo kaikki metatiedot kyselystä, sekä valuutanvaihtoarvon sekä määrän
+   */
   @GetMapping("/currency-converter-feign/from/{from}/to/{to}/quantity/{quantity}")
   public CurrencyConversionBean convertCurrencyFeign(@PathVariable String from, @PathVariable String to,
       @PathVariable BigDecimal quantity) {
