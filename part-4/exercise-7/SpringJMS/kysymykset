@@ -1,0 +1,44 @@
+Mitä sovelluksessa tapahtuu?
+----------------------------
+
+Spring tarjoaa JMS (Java Message Service)-integrointikehyksen,
+joka yksinkertaistaa JMS-API:n käytön.
+
+Tässä tutoriaalissa luodaan Hello World -esimerkki, jossa
+lähetämme/vastaanotamme viestin Apache ActiveMQ:lle/ActiveMQ:lta
+käyttäen Spring JMS:ää, Spring Boottia sekä Mavenia.
+
+Viestien lähettämiseen käytämme tavallista luokkaa Sender.java ja 
+sen konfiguraatioluokkaa SenderConfig.java. Konfiguraatioluokka
+määrittelee beanit sekä yhteyden ActiveMQ:een.
+
+Viestin vastaanottamiseen käytämme tavallista luokkaa Receiver.java
+ja sen konfiguraatioluokkaa ReceiverConfig.java. Konfiguraatioluokka
+määritellee beanit sekä yhteyden ActiveMQ:een.
+
+
+Viestien lähettämistä sekä vastaanottamista voidaan testata laittamalla
+tämä ohjelma päälle ajamalla se Java Application-suorituksena tai 
+ajamalla sille tehty yksinkertainen testi-tiedosto (mvn test).
+
+
+
+Mitkä ovat JMS:n/ActiveMQ:n tyypillisimmät käyttökohteet sovelluskehityksessä?
+------------------------------------------------------------------------------
+
+Apache ActiveMQ on Javalla kirjoitettu, avoimen lähdekoodin viestinvälittäjä
+-ohjelmisto yhdessä JMS:n (Java Message Service) kanssa.
+
+JMS ja ActiveMQ ovat tekniikoita, joita sovellukset käyttävät kommunikointiin
+olematta tiukasti kytkettyinä toisiinsa. Se tarjoaa sovelluksille alustan
+viestien lähettämiseen ja vastaanottamiseen tiettyihin tai useisiin
+kohteisiin.
+
+ActiveMQ:ta käytetään luotettavasti kommunikoimaan kahden hajautetun
+prosessin välillä. Samaa tekniikkaa ei voida suoraan toteuttaa tietokannan avulla,
+koska viestin vastaanottamisen jälkeen sinun pitäisi poistaa kyseinen rivi. Tämä
+tarkoittaa rivin lisäämistä ja poistamista jokaiselle viestille. Skaalattavuus
+kärsisi kun viestejä olisi tuhansia.
+
+JMS on API, jonka ActiveMQ implementoi. Tämä tekee viesteillä yhteisen muodon
+ja tekee siitä semanttisen, mikä helpottaa integrointia eri sovellusten välillä.
