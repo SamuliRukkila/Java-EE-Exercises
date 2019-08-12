@@ -1,0 +1,194 @@
+|=======================================================|
+| MUISTIO PORTLETIN LUOMISESTA & JULKAISUSTA LIFERAYSSA |
+|=======================================================|
+
+Tarkoituksena on luoda vieraskirja -portletti, johon käyttäjät voivat 
+jättää viestejä. Viestit ylläpitoon käytetään tietokantaa. Admin pystyy
+tekemään CRUD-toiminta vieraskirjoille (=Guestbook).
+
+
+---------------------------------
+ LUOMINEN
+---------------------------------
+
+
+1. Asenna Liferay Dev Studio CE ja laita se käyntiin
+
+2. Luo Liferay Workspace, joka ylläpitää Liferay Portal projekteja (tänne luomme
+tarvittavat portlerit).
+
+3. Aloita portletti tekemällä uusi Liferay Module Project workspaces sisällä. Templaattina käytä mvc-portlettia.
+
+4. Kun sinulla on toimiva workspace, joka toimii palvelina, draggaa tehty moduuli
+serverin päälle ja se lisäytyy automaattisesti workspace-palvelimelle.
+
+5. Mene localhost osoitteeseen "localhost:8080", ja määrittele alussa tarvittavat
+käyttäjä- ja tietokanta -konfiguroinnit.
+
+6. Nyt kun kokeilet painaa "+" -nappia oikealla yläkulmassa ja valitset "Widgets"
+-osion, voit valita tehdyn projektin "Guestbook", joka tulee näkyviin.
+
+7. Projektin view -osiossa on init.jsp, jossa haetaan kaikki tarvittavat kirjastot muihin templaatteihin. Lisää tänne tarvittavat osoitteet kirjastoille.
+
+8. Mene view.jsp -templaattitiedostoon ja lisää tarvittava HTML-koodi uuden kirjauksen luomiseen vieraskirjaan.
+
+9. Lisää sitten view.jsp -tiedostossa Liferayn oma sisäinen URL, joka vie sinut lomakkeeseen, jossa voit luoda uuden kirjauksen.
+
+10. Luo edit_entry.jsp -tiedosto, jossa voit luoda uuden kirjauksen. Lisää myös kaksi nappia, mistä toinen tekee Portlet Action -toiminnan ja toinen vie sinut takaisin etusivulle.
+
+
+-- Tässä vaiheessa uudet kirjaukset menevät vielä Liferayn omaan väliaikaiseen tietokantaan --
+
+
+11. Lisää GuestbookPortlet -tiedostoon addEntry() -funktio, mikä lisää uuden
+kirjauksen. 
+
+12. Lisää funktion sisään tarvittavat koodi mikä hakee käyttäjän antamat arvot
+lomakkeessa parametreina ja lisää ne väliaikaiseen tietokantaan.
+
+13. Seuraavaksi sinun pitää hakea tehdyt kirjaukset etusivulle, kun joku saapuu sinne. Luo tätä varten projektissa model -paketti, johon voit luoda Entry-mallin. 
+Mallin attribuuteiksi tulevat name ja message. Lisää konstruktorit + getterit & setterit. 
+
+14. Luo parseEntries() -funktio, mikä parsii yhdessä stringissä sisältävät arvot - käyttänimi ja viesti - omiksi alkioikseen taulukossa (eroteltu ^ -merkillä).
+
+15. Tee sitten @Overried -annotaatiolla varustettu render() -funktio, mikä hakee
+vieraskirjamerkinnät kokoonpanosta, kutsuu parseEntries()-funktiota, muuttaa ne 
+Entry-objekti -listiksi ja sijoittaa tämän listin pyyntö-objektiksi. Sitten se kutsuu parent-luokan renderöintimenetelmää.
+
+16. Mene sitten lopuksi takaisin view.jsp -templaattiin ja tee taulukko, joka 
+tulostaa kaikki löytyneet vieraskirjamerkinnät.
+
+
+---- Seuraavaksi luomme backendin vieraskirjamerkinnöille, jotta voimme tallentaa ne tietokantaan ----
+
+
+17. Tietokannan yhdistämisen takia luomme uuden Service -kerroksen sille. Luomme
+uuden Liferay Module projektin - guestbook, jonka templaatiksi annamma "service-builder" -osion. Tämä luo kaksi moduulia; guestbook-api & guestbook-service.
+
+18. Meidän ei tarvitse itse luoda tietokannan taulusta entiteettiä. Kun määrittelet ne Service Builder -sovelluksessa, se luo valmiit objektimallit ja kartoittaa sen kaiken SQL-tietokantaan, jota Liferay Portal tukee (konfiguroimme tarvittavat taulun attribuutit service.xml -konffitiedostossa).
+
+-- Joka kerta kun servicen funktiota päivitetään, meidän pitää ajaa Gradlen oma buildServicen funktio, joka asentaa tarvittavat riippuvuudet. Lopuksi projekti päivitetään Gradlen kautta (tee sama guestbook-api -moduulille) --
+
+19. Seuraavaksi implementoit palvelut vieraskirjalle ja merkinöille guestbook-service -moduulissa funktioista GuestbookLocalServiceImpl & EntryLocalServiceImpl -tiedostoista.
+
+20. Luo GuestbookLocalServiceImpl -tiedostoon addGuestBook() -funktio, mikä lisää uuden vieraskirjan tietokantaan.
+
+21. Lisää samaan tiedostoon myös getGuestBooks() -funktio, mikä hakee kaikki löydetyt vieraskirjat tietokannasta. 
+
+22. Tee sitten EntryLocalServiceImpl -tiedostoon addEntry() -funktio, mikä validoi
+datan ja vie sen sitten tietokantaan.
+
+23. Lisää vielä CRUD-menetelmiin liittyviä funktiota samaan tiedostoon - updateEntry(), deleteEntry() ja getEntries().
+
+
+-- Nyt meillä on toimiva backend, mutta sitä ei olla vielä integroitu alkuperäiseen moduuliin, joka käyttää vieläkin Liferayn omaa in-house -tietokantaa. Seuraavaksi vaihdamme kontrollerin ottamaan yhteyttä Service Builderin backendiin, vaihdamme vieraskirjan teon mahdollisuuden vain admineille sekä muuta --
+
+
+24. Aluksi yhdistämme Service -kerroksen backendin moduulin kanssa, siirtämällä sen samaan arkkitehtuuri-kansioon (guestbook).
+
+25. Haluamme erottaa adminin ja tavallisen käyttäjät mahdollisuudet vieraskirjassa, joten luomme omat kansiot kummallekkin näkymään (view).
+
+26. Muokkaa GuestbookPortlet -tiedoston luokkaa ja päivitä @Component -annotaation
+metadataa, jottta vain yksi vieraskirja -portletti luodaan sivulle.
+
+27. Koska portletin metadataa on muokattu, mene takaisin localhost:8080, osoitteeseen ja lisää portletti uudestaan sivulle, jotta saat sen toimimaan.
+
+28. Seuraavaksi luo portlet-avain (PortletKey) GuestbookPortletKeys -tiedostoon, joka ylläpitää tärkeitä tietoja esim. portletin nimestä ja muuttujista yhdessä paikassa.
+ 
+29. Poista guestbook-web -hakemistossa -> model -paketissa oleva tiedosto, koska backend on jo luonut sen. Lisää myös saman hakemiston build.gradle -tiedostoon
+tarvittavat yhteydet backendin palveluihin.
+
+30. Avaa GuestbookPortlet -tiedosto ja lisää tarvittavat referenssit palveluista.
+
+31. Muuta saman tiedoston funktiota, joka hakee vieraskirjat käyttämään backendin Service -kerroksen referenssejä. Lisää myös vieraskirjan poistoon tarkoitettu funktio ja päivitä render() -funktio samalla, joka luo tarvittaessa uuden vieraskirjan sivulle. Poista lopuksi parseEntries()-funktio.
+
+32. Päivitä sitten näkymää (view). Avaa kirjastojen-hallinta -tiedosto, init.jsp ja lisää tarvittavat uudet kirjastot.
+
+33. Avaa sitten view.jsp -templaatti ja muuta sen koodia, jotta se hakee vieraskirjat render()-funktion avulla.
+
+34. Muokkaa myös edit_entry.jsp -templaattia, jotta se on yhteytdessä Entry-entityyn ja käyttää addEntry() -funktiota.
+
+
+-- Nyt kun käynnistät palvelimen uudestaan ja menet localhost:8080 -osoitteseen ja tämän jälkeen lisäät uuden merkinnän vieraskirjaan, se menee tietokantaan. Samallalailla kun tulet sivuun, hakee se vieraskirjamerkinnät tietokannasta --
+
+
+-- Seuraavaksi lisäämme admin-käyttäjille CRUD-mahdollisuudet vieraskirjojen kanssa --
+
+
+35. Lisää uusi luokka portlet-pakettiin - GuestbookAdminPortlet. 
+
+36. Lisää tarvittavat kirjastot build.gradle -tiedostoon ja päivitä moduuli. 
+
+37. Lisää list-pakettiin uusi tiedosto GuestbookAdminPanelApp ja anna sen superluokaksi BasePanelApp. Tämän avulla voit muokata vieraskirjoja kontrolli-paneelissa.
+
+38. Lisää uusi portlet-avain GUesbookPortletKeys -luokkaan.
+
+39. Lisää tarvittava metadata GuestbookAdminPanelApp-luokkaan @Component-annotaation avulla.
+
+40. Lisää tarvittava metadata GuestbookAdminPanelApp-luokkaan @Component -annotaation avulla sekä luo muutaman yliajettava funktio.
+
+41. Lisää guestbook-service -Service kerrokseen funktiot, mikä päivittää vieraskirjan nimen ja poistaa vieraskirjan -> Aja Gradlen buildservice
+
+42. Mene takaisin guestbook-web -hakemistoon ja avaa kontrolleri-luokka GuestbookAdminPortlet. Lisää kontrollerifunktiot, jotka lisäävät, poistavat ja muokkaavat vieraskirjoja.
+
+43. Lisää vieraskirjojen CRUD-operaatioille käyttöliittymä -> tee uusi hakemisto resources/ -hakemistoon: guestbookadminportlet.
+
+44. Lisää uusi tiedosto view.jsp, joka lisää napin uusien vieraskirjojen luontiin, haun vieraskirjoille, sekä kaikki vieraskirjat allekkain.
+
+45. Lisää uusi tiedosto guestbook_actions.jsp, joka tuo pop-up -toiminnallisuudet CRUD-menetelmiin jokaiselle vieraskirjalle.
+
+46. Lisää uusi tiedosto edit_guestbook.jsp, joka hakee aluksi vieraskirjan ID:n perusteella, jonka avulla voit päivittää vieraskirjan nimeä.
+
+
+-- Haluamme vielä tulostaa tarvittavat viestit virhe- ja onnistumistilanteissa ennen julkaisemista --
+
+
+47. Avaa /content/ -hakemistossa Language.properties -tiedosto ja lisää tarvittavat avain-arvo -parit eri tilanteisiin.
+
+48. Avaa guestbook-web -moduulissa GuestbookPortlet ja GuestbookAdminPortlet -tiedostot ja lisää jokaiseen CRUD-funktioon SessionMessages -lisäys sekä virhetilanteissa SessionErrors -lisäys.
+
+49. Mene sitten kummankin view.jsp -tiedostoon ja lisää tiedostojen alkuun (init.jsp:n jälkeen) elementit, jotka voivat näyttää onnistumis- ja virheviestit.
+
+
+-- Nyt kun meillä on applikaatio, joka käyttää tietokantaa, käyttäjät saattavat haluta antaa oikeudet vieraskirjaan vain tietyille henkilöille. Tästä syystä kehitämme lopuksi oikeuksien antamisen tietyille henkilöille --
+
+
+50. Lisää moduuliin guestbook-web ja service-kerrokseen guestbook-service tiedosto default.xml, mikä määrittää oikeudet
+
+51. Lisää molempiin projekteihin portlet.properties -tiedosto, mikä määrittää mistä ylempi tiedosto löytyy projekteille.
+
+52. Mene guestbook-serviceen ja lisää CRUD-funktioihin toiminnot, jotka samalla lisäävät oikeudet tietokantaan.
+
+53. Rekisteröi entiteetit permissions-palvelun kanssa -> luo GuestbookConstants-luokka API-moduuliin ja vie uusi RESOURCE_NAME (Lisää GuestbookPorlets-tiedosto, samaan pakettiin, jotta ne voivat keskustella keskenään).
+
+54. Lisää käyttöoikeuksien rekisteröintiluokat guestbook-servicessä.
+
+55. Lisää guestbook-web -moduuliin uusi paketti, ja luo uusi GuestbookPermission -luokka sekä luokat GuestbookModelPermission ja GuestbookEntryPermission.
+
+56. Samassa moduulissa; lisää tarvittavat importit init.jsp-tiedostoon.
+
+57. Lisää uusien vieraskirjojen lisäämiseen nappi, joka tarkistaa oikeudet.
+
+58. Lopuksi lisää vieraskirjaan kirjoittamiseen katsovat oikeudet kaikkiin tiedostoihin, jotka tekevät CRUD-operaatioita.
+
+
+---------------------------------
+ JULKAISEMINEN
+---------------------------------
+
+
+1. Voit luoda uuden palvelimen samalla kun teet uutta workspacea Liferayn moduuleille ja portleteille. 
+
+1.5. Jos haluat luoda uuden palvelimen, jonka avulla voit julkaista
+portlettisi Liferayn Portaalissa, mene Eclipsessä "Servers" -tabiin,
+oikeaklikkaa ja paina "New -> Server". Valitse täältä "Liferay, Inc. -> Liferay 7.x". Valitsi hakemisto missä palvelin pistetään käyntiin (yleensä samassa paikassa missä workspace sijaitsee).
+
+2. Nyt kun näet "Servers" -tabissa valmiin palvelimen. Siirrä hiirrellä halutut moduulit tähän kansioon. Palvelin lähtee automaattisesti päälle.
+
+3. Odota viestiä, jossa kerrotaan, että palvelin on nyt päällä ja suunnista "localhost:8080" -osoitteseen netissä. 
+
+4. Pienen latauksen jälkeen olet valmiiksi täällä.
+
+5. Jos tulee virheitä tai haluat uudestaan ladata palvelimen, voit oikeaklikata sitä ja painaa "Stop -> Start".
+
+6. Palvelimen osaa automaattisesti refreshaa kontentin, kun teet muutoksia lähdekoodiin.
