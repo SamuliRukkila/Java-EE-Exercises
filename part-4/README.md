@@ -28,8 +28,14 @@ In this assignemnt we'll create a simple Spring Boot WebFlux -application via th
 be using reactive MongoDB -driver to make it possible. Main emphasis is on answering couple of questions which
 are in the comments in the source-code.
 
-### #6 --
+### #6 Spring Cloud/Boot Microservices
 
-### #7 --
+In this assignment we'll complete a 4-part [guide](http://www.springboottutorial.com/creating-microservices-with-spring-boot-part-1-getting-started) where we'll create architecture of micro-services and naming-server. Main emphasis is on explaining micro-services via questions.
 
-### #8 --
+### #7 Spring JMS + ActiveMQ
+
+In this assignment we'll complete a [guide](https://codenotfound.com/spring-jms-activemq-example.html), where we'll create a JMS-Spring -platform to send and receive messages. We'll also download ActiveMQ to see these messages in a local server.
+
+### #8 Liferay developer tutorial - Guestbook
+
+In this assignment we'll complete a [guide](https://portal.liferay.dev/docs/7-1/tutorials/-/knowledge_base/t/developing-a-web-application), where we'll create a simple portlet for Liferay. Portlet will be a guestbook, where one can leave their marks. Admin can also do CRUD-operations for guestbook(s).
