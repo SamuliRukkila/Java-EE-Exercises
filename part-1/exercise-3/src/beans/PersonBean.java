@@ -17,7 +17,19 @@ public class PersonBean implements Serializable {
 	private String email;
 	
 	
-	// Getters for all the attributes
+	/* CONSTRUCTORS */
+	
+	public PersonBean() {}
+	
+	public PersonBean(String name, String address, String city, String email) {
+    this.name = name;
+    this.address = address;
+    this.city = city;
+    this.email = email;
+  }
+	
+	
+  // Getters for all the attributes
 	// Returns wanted attribute by calling method name
 	public String getName() {
 		return name;

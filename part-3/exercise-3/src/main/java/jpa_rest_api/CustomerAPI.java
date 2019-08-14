@@ -3,14 +3,15 @@ package jpa_rest_api;
 import java.security.Key;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.ejb.EJB;
 import javax.transaction.Transactional;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -19,8 +20,6 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.HeaderParam;
-import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import io.jsonwebtoken.Jwts;
@@ -30,6 +29,10 @@ import io.jsonwebtoken.SignatureException;
 /**
  * Customer-API which includes REST-API. It'll use JSON as a type to pass data.
  * Request-types (Get, Post, Delete) will be created using JAX-RS annotation.
+ * 
+ * @Produces and @Consumes -annotations determines what type of data this class
+ * will receive and send.
+ * 
  * @path (/customersapi/customer/)
  * @author samuli
  * @param <JSONObject>
@@ -51,6 +54,7 @@ public class CustomerAPI extends Application {
   
   /**
    * Validates user's token.
+   * 
    * @param authToken - token which'll be validated
    * @return boolean value representing of token was valid/invalid
    */
@@ -67,6 +71,7 @@ public class CustomerAPI extends Application {
   
   /**
    * Checks that user's given ID is a number.
+   * 
    * @example [1] => OK | [foo] => ERORR
    * @param param - Parameter which'll be checked
    * @returns true if user parameter is valid; false if not
@@ -84,6 +89,7 @@ public class CustomerAPI extends Application {
   /**
    * Function to login user using static values ("123" & "123"). Token will be
    * created for the user if the values are same. 
+   * 
    * @param c - User's email & password
    * @return Token; if wrong credentials returns error-message
    */
@@ -115,6 +121,7 @@ public class CustomerAPI extends Application {
    * customers will be fetched from injected Customer-service. These
    * values will then be returned back to the caller. 404 message will
    * be returned if no customers were found.
+   * 
    * @returns Customers in a object-list; string message if none were found
    */
   @GET
@@ -135,6 +142,7 @@ public class CustomerAPI extends Application {
    * be fetched from injected Customer-service. If user is found, it'll
    * returned back to this function. Otherwise an error-message will be
    * returned.
+   * 
    * @param id - Customer's ID
    * @returns Customer as an object; error-message if user weren't found
    */
@@ -163,6 +171,7 @@ public class CustomerAPI extends Application {
    * deleted in injected Customer-service. If user weren't found or there 
    * were error deleting the customer, a proper error-message will be sent
    * instead.
+   * 
    * @param id - Customer's ID
    * @returns string-message telling if deletion was successful/unsuccessful
    */
@@ -170,8 +179,12 @@ public class CustomerAPI extends Application {
   @Path("{id:}")
   public Response deleteCustomer(@PathParam("id") String id, @HeaderParam("token") String token) {
     
-    if (validateToken(token) == false) {
-      return Response.status(401).entity("Väärä token").build();
+    if (token != null && !token.isEmpty()) {
+      if (validateToken(token) == false) {
+        return Response.status(401).entity("Antamasi token on väärä").build();
+      }
+    } else {
+      return Response.status(401).entity("Et ole kirjautunut sisään").build();
     }
     
     // Validate parameter
@@ -197,12 +210,23 @@ public class CustomerAPI extends Application {
    * in injected Customer-service. Created customer -object will be returned
    * if creation is successful. If creation is unsuccessful, an error-message
    * will be returned instead.
+   * 
    * @param c - Customer -object
    * @returns Customer -object if created successfully; error-message if
    *    failed to create the customer
    */
   @POST
-  public Response createCustomer(Customer c) {
+  public Response createCustomer(Customer c, @HeaderParam("token") String token) {
+    
+    
+    if (token != null && !token.isEmpty()) {
+      if (validateToken(token) == false) {
+        return Response.status(401).entity("Antamasi token on väärä").build();
+      }
+    } else {
+      return Response.status(401).entity("Et ole kirjautunut sisään").build();
+    }
+    
     String error = cs.createCustomer(c);
     if (error != null) {
       return Response.status(500).entity(error).build();

@@ -2,7 +2,56 @@ Mitä hyötyjä JPA:n käyttö tuo JSF-sovellukseen?
 ===============================================
 
 ---------------------------------------------
-1. Koodin lajittelu
+1. Kehittäjän tuottavuus
+---------------------------------------------
+
+Tuottavuus on JPA:n yksi eniten viitatuista eduista. Sinun täytyy
+määritellä yhteys tietokannan taulujen ja doaminin mallin kanssa 
+vain kerran, jonka jälkeen voit helposti tehdä melkein kaikkia
+CRUD-menetelmiä. JPA tuo myös paljon ylimääräisiä ja hyödyllisiä
+etuja (jota joutuisit muuten implementoimaan itse), kuten avaimen 
+(primary key) luoinen, samanaikainen hallinta ja erilaisit
+suorituskyvyn optimoinnit.
+
+---------------------------------------------
+2. Nopeampi (=välimuisti)
+---------------------------------------------
+
+JPA:n välimuisti auttaa sinua vähentämään suoritettujen SQL-käskyjen määrää tallentamalla
+kokonaisuuksia paikalliseen muistiin. Tämä tarjoaa suuria suorituskyvyn parannuksia, jos samoja
+entityjä joudutaan lukemaan useita kertoja.
+
+---------------------------------------------
+3. Tietokannasta riippumaton
+---------------------------------------------
+
+Jos yrität käyttää samaa SQL-kirjoitusta eri tietokantojen kanssa, törmäät nopeasti 
+erilaisten SQL-"murteiden" aiheuttamiin ongelmiin. Kukin tietokanta (yleensä) käyttää
+hiukan erilaista dialectia. Tämä on paha ilman JPA:ta varsinkin, jos kyselyiden tarvitsee
+toimia eri tietokannoissa samaan aikaan.
+
+JPA tarjoaa tietokannasta riippumattoman abstraktin SQL:n päälle. (Pl. natiivikyselyt), sinun
+ei tarvitse huolehtia tietokannan siirrettävyydestä. JPA mukautuu jokaiseen tietokantaan ja
+API-kutsuun, ja pystyy adaptoitumaan eri tietokantojen "murteisiin".
+
+
+---------------------------------------------
+4. SQL-pyyntöjä ei tarvitse itse kirjoittaa
+---------------------------------------------
+
+JPA:n (joka sisältää ORM:n) ansiosta sinun ei ole pakko kirjoittaa lähes koskaan 
+SQL-pyyntöjä itse vaan JPA luo ne sinulle valmiista Entity-luokasta
+
+---------------------------------------------
+5. Tietokantaan yhdistäminen on helpompaa
+---------------------------------------------
+
+JPA:n ansiosta et tarvitse kuin persistence.xml -tiedoston, johon 
+kerrot vain mihin Resourceen -haluat yhdistää (Payara-server). Pystyt myös muokkaamaan 
+xml -tiedostoa helposti, jos haluat esim. debugata applikaatioasi. 
+
+---------------------------------------------
+6. Koodin lajittelu
 ---------------------------------------------
 JPA:n avulla saamme 3-kerroksisen stackin, 
 	1. näkymä (index.xhtml)
@@ -11,16 +60,5 @@ JPA:n avulla saamme 3-kerroksisen stackin,
 jossa jokainen ohjelmalohkon osa on lajiteltu omiin tiedostoihinsa. Tämä helpottaa koodin debuggausta sekä laajennusta.
 
 
----------------------------------------------
-2. SQL-pyyntöjä ei tarvitse itse kirjoittaa
----------------------------------------------
-
-JPA:n (joka sisältää ORM:n) ansiosta sinun ei ole pakko kirjoittaa lähes koskaan SQL-pyyntöjä itse vaan JPA luo ne sinulle valmiista Entity-luokasta
 
 
----------------------------------------------
-3. Tietokantaan yhdistäminen on helpompaa
----------------------------------------------
-
-JPA:n ansiosta et tarvitse kuin persistence.xml -tiedoston, johon kerrot vain mihin Resourceen -haluat yhdistää (Payara-server). Pystyt myös muokkaamaan 
-xml -tiedostoa helposti, jos haluat esim. debugata applikaatioasi. 

@@ -23,7 +23,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 @ProviderType
 public class GuestbookNameException extends PortalException {
 
-	public GuestbookNameException() {
+  private static final long serialVersionUID = 1L;
+
+  public GuestbookNameException() {
 	}
 
 	public GuestbookNameException(String msg) {

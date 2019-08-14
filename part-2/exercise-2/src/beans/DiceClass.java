@@ -9,7 +9,7 @@ import javax.inject.Named;
 
 
 /**
- * Using JSF's annotion we'll make a @named bean. Any 
+ * Using JSF's annotion we'll make a @Named bean. Any 
  * other file can use this bean without importing it just
  * by calling its name - "DiceBean". 
  * 

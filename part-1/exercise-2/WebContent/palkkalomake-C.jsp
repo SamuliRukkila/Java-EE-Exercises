@@ -9,7 +9,8 @@
 	<body>
 		<h3>Laske palkkasi</h3>
 		
-		<!-- Force inputs to number and allow them to include decimals -->
+		<!-- Force inputs to number and allow them to include decimals.
+    Send form-values to servlet. -->
 		<form name='countPayment' method="post" action="LaskePalkkaServletC">
 			<p>Tehdyt tunnit:</p> 
 			<input type="number" step="any" name="hours" required>

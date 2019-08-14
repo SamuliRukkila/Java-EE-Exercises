@@ -27,6 +27,24 @@ public class CustomerBean implements Serializable {
   // Includes all the customers found from the table  
   private ArrayList<CustomerBean> customers;
   
+  
+  /* CONSTRUCTORS */
+  
+  public CustomerBean() {}
+  
+  public CustomerBean(DbBean dbBean, int id, String nimi, String osoite, String puhelin, String email, String salasana,
+      String status, ArrayList<CustomerBean> customers) {
+    this.dbBean = dbBean;
+    this.id = id;
+    this.nimi = nimi;
+    this.osoite = osoite;
+    this.puhelin = puhelin;
+    this.email = email;
+    this.salasana = salasana;
+    this.status = status;
+    this.customers = customers;
+  }
+
 
   /**
    * Function which'll gather all the customers from 
@@ -50,7 +68,7 @@ public class CustomerBean implements Serializable {
    * query is done in another bean, it'll return a status-message which
    * will tell if query was successful or not. 
    * 
-   * If query is successfull (status == "Lisätty), we'll empty all the inputs
+   * If query is successful (status == "Lisätty), we'll empty all the inputs
    * in the facelet.
    * 
    * @return status - status-message describing if SQL-query was successfull or not

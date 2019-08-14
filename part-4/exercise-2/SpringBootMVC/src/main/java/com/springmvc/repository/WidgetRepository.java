@@ -1,6 +1,7 @@
 package com.springmvc.repository;
 
 import org.springframework.data.repository.CrudRepository;
+
 import com.springmvc.model.Widget;
 
 /**
@@ -15,7 +16,7 @@ import com.springmvc.model.Widget;
  *    tyyppiä, jota tämä rajapinta hallitsee 
  *  2. on Widget -rajapinnan ensisijaisen avaimen (id) tyyppi
  *  
- * Käyttäen hyväksi H2 -kirjaston moottoria, meidän ei itse tarvitse luoda tai
+ * Käyttäen hyväksi H2 -kirjastoa, meidän ei itse tarvitse luoda tai
  * yhdistää tietokantaan, vaan H2 luo sen meille automaattisesti. Tämä helpottaa
  * kehitysvaiheessa CRUD + MVC -toimintojen testausta ja varmuutta.
  */

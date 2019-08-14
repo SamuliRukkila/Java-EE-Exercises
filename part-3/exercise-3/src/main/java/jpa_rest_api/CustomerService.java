@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.validation.ConstraintViolationException;
 
 
 // This service is @Stateless so the instance of it will be destroyed after every call.
@@ -30,6 +31,7 @@ public class CustomerService {
   /**
    * Fetches all available customers from the database via @NamedQuery. If it does not
    * find any it'll return an empty Customer -list.
+   * 
    * @return all the found customers
    */
   public List<Customer> getCustomers() {
@@ -41,6 +43,7 @@ public class CustomerService {
   /**
    * Get one customer by it's ID. It'll return the customer -object if it founds one.
    * If none is found it'll return a null -object.
+   * 
    * @param id - Customer's ID
    * @return Customer -object
    */
@@ -54,6 +57,7 @@ public class CustomerService {
    * Delete one customer by it's ID. It'll return a true if deletion is
    * successful. Boolean value false will be returned if user cannot be 
    * found by ID-parameter.
+   * 
    * @param id - Customer's ID
    * @return boolean value telling if deletion was successful or not
    */
@@ -69,8 +73,10 @@ public class CustomerService {
   
   
   /**
-   * Creates a new customer -row into the database. Needed values will come via parameter.
-   * If the addition of the customer is successful, it'll return a true value, otherwise false.
+   * Creates a new customer -row into the database. Needed 
+   * values will come via parameter. If the addition of the 
+   * customer is successful, it'll return NULL error, otherwise error-msg.
+   * 
    * @param c - Customer -object containing customer's information
    * @return NULL if user was created successfully; error-message if creation was unsuccessful
    */
@@ -94,6 +100,10 @@ public class CustomerService {
     catch (IllegalArgumentException iae) {
       System.out.println(iae);
       return "Et antanut asiakkaan tietoja oikeassa muodossa";
+    }
+    catch (ConstraintViolationException cve) {
+      System.out.println(cve);
+      return "Joku tiedoista oli luultavasti liian pitkä. Kysy maks. pituudet palveluntarjoalta";
     }
     // General error
     catch (Exception e) {

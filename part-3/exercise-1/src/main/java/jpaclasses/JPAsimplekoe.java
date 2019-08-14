@@ -40,12 +40,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
 
 @SuppressWarnings("unchecked")
 public class JPAsimplekoe {
   
-  // Objects which we'll use with JPA to perform queries, updates etc
+  // Objects which we'll use with JPA to perform queries, updates etc.
 	private static EntityManagerFactory emf;
 	private static EntityManager em;
 	private static EntityTransaction tx;
@@ -83,6 +82,7 @@ public class JPAsimplekoe {
 	 * Prints all book-groups from MySQL. Function will use ready-made @NamedQuery to print all the 
 	 * available book-groups with their ID and name. User will then be prompted to select one of the
 	 * book-groups by their unique ID for further querying.
+	 * 
 	 * @return 1 book-group's unique ID | zero if input cannot be parsed to integer
 	 */
 	public static int printBookGroups() {
@@ -106,6 +106,7 @@ public class JPAsimplekoe {
    * Prints all books from MySQL. Function will use ready-made @NamedQuery to print all the 
    * available books with their ID, author and title. User will then be prompted to select one of the
    * books by their unique ID for further querying.
+   * 
    * @return 1 book's unique ID | zero if input cannot be parsed to integer
    */
 	public static int printBooks() {
@@ -263,7 +264,6 @@ public class JPAsimplekoe {
 	      tx.commit();
 	      
 	    } catch (IllegalArgumentException iae) {
-	      System.out.println(iae);
 	      System.out.println("\n// Kirjaryhmää ID:llä: [" + id + "] ei voitu poistaa. Ei löydetty\n");
 	    }
 	  }
@@ -291,7 +291,7 @@ public class JPAsimplekoe {
 		// Loop through all books the print them row-by-row
 		for (Book b : books) {
 		  System.out.format(leftAlignFormat, b.getAuthor(), b.getTitle(), 
-		    b.getBookGroup() != null ? b.getBookGroup().getName() : "");
+		    b.getBookGroup() != null ? b.getBookGroup().getName() : "[Ei ryhmää]");
 		}
 		
 		// Prints the amount of books in the table
@@ -333,7 +333,7 @@ public class JPAsimplekoe {
 	    System.out.println("\nMitäs tehdään?\n--------------\n" +
               	         "1) Lisää kirja \n2) Poista kirja \n" +
               	         "3) Lisää kirjaryhmä \n4) Poista kirjaryhmä \n" +
-              	         "5) Näytä kirjat\n6) Poistu");
+              	         "5) Näytä kirjat & kirjaryhmät\n6) Poistu");
 	    System.out.print("> ");
 
 	    try {

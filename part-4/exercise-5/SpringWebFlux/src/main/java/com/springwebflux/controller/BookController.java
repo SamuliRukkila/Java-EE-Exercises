@@ -59,6 +59,8 @@ public class BookController {
   /**
    * POST-tyyppinen funktio, joka lisää uuden kirjan MongoDB-kantaan.
    * 
+   * @Example: { "title": "Book 1", "author": "Author" }
+   * 
    * @param book - Uusi kirja objektina
    * @return Tallennettu kirja Mono-muodossa
    */

@@ -61,9 +61,9 @@ public class CustomerServlet extends HttpServlet {
           out.println("</tr>");
           for (Book b : books) {
             out.println("<tr>");
-            out.println("<td>" + b.getId() + "</td>");
-            out.println("<td>" + b.getAuthor() + "</td>");
-            out.println("<td>" + b.getTitle() + "</td>");
+            out.println("<td>" + (b.getId() != null ? b.getId() : "--") + "</td>");
+            out.println("<td>" + (b.getAuthor() != null ? b.getAuthor() : "--") + "</td>");
+            out.println("<td>" + (b.getTitle() != null ? b.getTitle() : "--") + "</td>");
             out.println("</tr>");
           }
         out.println("</table>");

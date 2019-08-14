@@ -1,0 +1,7 @@
+1. SpringEurekaNamingServer
+2. SpringZuulService
+3. SpringCurrencyConversion
+4. SpringImageService
+5. SpringMicroServiceForex 2X
+4. SpringGalleryService 2X
+

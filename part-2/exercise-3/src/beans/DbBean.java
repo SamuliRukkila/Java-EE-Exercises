@@ -25,8 +25,8 @@ package beans;
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.ResultSet;
-
 import java.sql.Statement;
+
 import javax.enterprise.context.Dependent;
 import javax.inject.Named;
 import javax.naming.Context;
@@ -54,7 +54,7 @@ public class DbBean implements Serializable {
    * 
    * @return conn - Connection to MySQL
    */
-  public Connection Connect() {
+  public Connection Connect() throws Exception {
 
     Connection conn;
     
@@ -62,6 +62,7 @@ public class DbBean implements Serializable {
       Context ctx = new InitialContext();
       DataSource ds = (DataSource) ctx.lookup("jdbc/mysql_2_3");
       conn = ds.getConnection();
+      System.out.println(ds.getLoginTimeout());
     } catch (Exception ex) {
       System.out.println(ex);
       return null;
@@ -76,22 +77,24 @@ public class DbBean implements Serializable {
    * @return message telling if username is taken already
    */
   public String getMessage(String value) {
-
+    System.out.println("Täällä ollaan 1");
     try {
+      System.out.println("Täällä ollaan 1-1");
       Connection conn = Connect();
+      System.out.println("Täällä ollaan 1-2");
       Statement stmt = conn.createStatement();
       ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE username='" + value + "';");
-      
       int rivilkm = 0;
       while (rs.next()) {
         rivilkm++;
       }
-      
       if (rivilkm == 1) {
         message = "On jo käytössä. Valitse toinen käyttäjätunnus";
       } else {
         message = "Käytettävissä";
       }
+      System.out.println(message);
+      conn.close();
       return message;
 
     } catch (Exception ex) {

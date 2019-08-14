@@ -59,7 +59,7 @@ public class GuestbookEntryModelResourcePermissionRegistrar {
     @Reference(target = "(resource.name=" + GuestbookConstants.RESOURCE_NAME + ")")
     private PortletResourcePermission _portletResourcePermission;
 
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "rawtypes" })
     private ServiceRegistration<ModelResourcePermission> _serviceRegistration;
 
     @Reference

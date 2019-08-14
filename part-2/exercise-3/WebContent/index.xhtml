@@ -43,11 +43,11 @@
             <!-- When user click away from username-input, that username will be sent to bean which'll
             verify that chosen username isn't taken already. In case it is (or isn't) a message will pop,
             telling the situation of that specific username. -->
-            <f:ajax execute="username" render="output submitBtn" event="blur"/>
+            <f:ajax execute="username" render="output submitBtn notice" event="blur"/>
           </h:inputText>
           <!-- Message-panel which will tell if username is taken or not taken already -->
           <h:outputText styleClass="#{userBean.ajaxmessage == 'Käytettävissä' ? 'notUsed' : 'used'}" 
-            id="output" value="#{userBean.ajaxmessage}"/>
+            id="output" value="#{userBean.ajaxmessage}" style="display:#{(userBean.ajaxmessage == '') ? 'none' : 'initial'}"/>
         </h:panelGroup>
         
         <!-- PASSWORD -->        
@@ -74,6 +74,7 @@
       <!-- Information box, which'll tell if insertion of the new user was successful or not. -->
       <p>
         <h:outputText id="notice" value="#{userBean.notice}" 
+          style="display:#{(userBean.notice == '') ? 'none' : 'initial'}" 
           styleClass="#{userBean.notice == 'Tunnukset luotu' ? 'notUsed' : 'used'}"/>
       </p>
       

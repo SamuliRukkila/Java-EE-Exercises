@@ -13,6 +13,16 @@ import javax.inject.Named;
  * toimii siis välittäjänä facelettien välillä; vastaanottaa dataa eri
  * faceleilta sekä lähettää tarvitsiville faceteille dataa.
  * 
+ * Beanilla pitää myös olla setterit & getterit niille attribuuteille mitä halutaan käyttää pavun
+ * ulkopuolella (ei tarpeellista, mutta muuten melkeinpä hyödyttömiä).
+ * 
+ * Nimetylle pavulla on myös annettu @RequestScoped -attribuutti, mikä tarkoittaa, että papu on aina
+ * näkyvissä aina sille tehtäessä pyyntö ja se lopettaa itsensä pyynnön jälkeen.
+ * 
+ * 
+ * Miten autentikaatio sovelluksessa tapahtuu?
+ * -------------------------------------------
+ * 
  * Tällä pavulla on tarvittavat muuttujat sekä funktiot autentikoitumiseen.
  * Kun käyttäjä antaa ktunnuksen + salasanan ja painaa "submit" -nappia pääsivulla,
  * toteutetaan tämän luokan validateUserLogin() -funktio, joka katsoo, että 
@@ -20,12 +30,6 @@ import javax.inject.Named;
  * stringi "success". Takaisin index.xhtml:ssä "submit" -nappulan kohdalla on action -attribuutti,
  * jonka avulla käyttäjä voidaan viedä haluamalle sivulle.  Samanlainen
  * tapahtuma tapahtuu myös jos tiedot ovat vääriä "failure" -> failure.xhtml.
- * 
- * Beanilla pitää myös olla setterit & getterit niille attribuuteille mitä halutaan käyttää pavun
- * ulkopuolella (ei tarpeellista, mutta muuten melkeinpä hyödyttömiä).
- * 
- * Nimetylle pavulla on myös annettu @RequestScoped -attribuutti, mikä tarkoittaa, että papu on aina
- * näkyvissä aina sille tehtäessä pyyntö.
  * 
  * @author samuli
  */

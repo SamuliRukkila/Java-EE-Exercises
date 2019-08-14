@@ -8,6 +8,7 @@ käyttää enemmän URLeja hyväkseen (@path("/fooservice"))
 - SOAP-API:ssa pystyt muodostamaan sessioita palvelin-puolella, kun taas REST-API:ssa se on mahdotonta
 - SOAP-API:Ssa tiedonsiirtona voit käyttää protokollia kuten: HTTP, SMTP, UDP jne., mutta REST-APIssa
 vain HTTP:ta.
+- SOAP-API on raskaampi, mutta turvallisempi (käytetään enemmän esim. pankeissa)
 
 
 Millaisessa muodossa tieto liikkuu kun käytetään SOAP-APIa?

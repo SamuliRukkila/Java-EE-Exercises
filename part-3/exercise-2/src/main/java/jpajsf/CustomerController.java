@@ -54,11 +54,16 @@ public class CustomerController implements Serializable {
     }
     return status;
   }
+
   
+  /* CONSTRUCTOR(S) */
   
   public CustomerController() {
     this.customer = new Customer();
   }
+  
+  /* GETTERS AND SETTERS */
+  
   
   public void setCustomer(Customer c) {
     this.customer = c;

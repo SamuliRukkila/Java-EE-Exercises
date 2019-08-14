@@ -33,6 +33,9 @@ public class Book implements Serializable {
   
 	private static final long serialVersionUID = 1L;
 	
+	
+	/* COLUMNS */
+	
 	// Main column in table
 	@Id
 	// Auto-incremented value
@@ -60,6 +63,8 @@ public class Book implements Serializable {
 	private BookGroup bookgroup;
 	
 	
+	/* CONSTRUCTORS */
+	
 	public Book() {
 	}
 
@@ -73,7 +78,10 @@ public class Book implements Serializable {
 		this.title = title;
 		this.author = author;
 	}
-
+  
+  
+  /* SETTERS AND GETTERS */
+  
 	public Integer getId() {
 		return book_id;
 	}

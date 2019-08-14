@@ -25,6 +25,9 @@ public class Bookgroup implements Serializable {
   
   private static final long serialVersionUID = 1L;
   
+  
+  /* COLUMNS */
+  
   /**
    * Primary key for the "bookgroup" -table. Enables
    * AUTO_INCREMENT -attribute for automatic values.
@@ -33,8 +36,6 @@ public class Bookgroup implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "bookgroup_id")
   private Integer id;
-  
-  /* OTHER TABLE ATTRIBUTES */
   
   @Column(name = "name")
   private String name;

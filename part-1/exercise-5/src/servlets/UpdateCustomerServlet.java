@@ -82,7 +82,7 @@ public class UpdateCustomerServlet extends HttpServlet {
         "`salasana` = '"+ salasana +"' " +
         "WHERE id=" + id + ";"
       );
-      // If updation is successful, assing new values to bean
+      // If updation is successful, assign new values to bean
       papu.setId(id);
       papu.setNimi(nimi);
       papu.setOsoite(osoite);

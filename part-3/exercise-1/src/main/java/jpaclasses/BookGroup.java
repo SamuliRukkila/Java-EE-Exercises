@@ -22,11 +22,14 @@ import javax.validation.constraints.Size;
 @NamedQueries({
   @NamedQuery(name = "BookGroup.findAll", query = "SELECT bg FROM BookGroup bg"),
   @NamedQuery(name = "BookGroup.findAndCount", query = "SELECT bg.name, COUNT(b) amount FROM BookGroup bg "
-      + "LEFT OUTER JOIN bg.books b GROUP BY bg.name ORDER BY amount DESC")
+      + "LEFT OUTER JOIN bg.books b GROUP BY bg.bookgroup_id ORDER BY amount DESC")
 })
 public class BookGroup implements Serializable {
 
   private static final long serialVersionUID = 1L;
+  
+  
+  /* COLUMNS */
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,17 +43,13 @@ public class BookGroup implements Serializable {
   @Column(name = "name")
   private String name;
   
+  // One-to-many -reference to Book-taboe
   @OneToMany(mappedBy = "bookgroup")
   private List<Book> books = new ArrayList<>();
   
-  public List<Book> getBooks() {
-    return books;
-  }
-
-  public void setBooks(List<Book> books) {
-    this.books = books;
-  }
-
+  
+  /* CONSTRUCTORS */
+  
   public BookGroup() {}
   
   public BookGroup(Integer id) {
@@ -62,19 +61,26 @@ public class BookGroup implements Serializable {
     this.name = name;
   }
   
-  // Set & Get for ID
+  
+  /* SETTERS AND GETTERS */
+  
   public Integer getId() {
     return bookgroup_id;
   }
   public void setId(Integer id) {
     this.bookgroup_id = id;
   }
-  
-  // Set & Get for name
   public String getName() {
     return name;
   }
   public void setName(String name) {
     this.name = name;
+  }
+  
+  public List<Book> getBooks() {
+    return books;
+  }
+  public void setBooks(List<Book> books) {
+    this.books = books;
   }
 }

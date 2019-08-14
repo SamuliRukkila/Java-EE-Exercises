@@ -1,26 +1,12 @@
 package classes;
 
-/*
- * SQL.java
- * Yksinkertainen luokka tietokannan käsittelyyn
- * attribuutit ja metodit staattisia eli tätä kutsutaan luokan nimellä
- * Ei tarvitse (eikä voi) luoda oliota.
- *
- */
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 import com.mysql.jdbc.PreparedStatement;

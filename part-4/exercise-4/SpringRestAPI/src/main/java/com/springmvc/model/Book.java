@@ -27,6 +27,9 @@ public class Book implements Serializable {
 
   private static final long serialVersionUID = 1L;
   
+  
+  /* COLUMNS */
+  
   /**
    * Add optional injection to this JPA-class (Bookgroup).
    * (Many books can be placed into one book-group).

@@ -13,10 +13,14 @@ import java.io.Serializable;
 public class Book implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
 	private Integer id;
 	private String title;
 	private String author;
-
+	
+	
+	/* KONSTRUKTORIT */
+	
 	public Book() {
 	}
 
@@ -29,7 +33,10 @@ public class Book implements Serializable {
 		this.title = title;
 		this.author = author;
 	}
-
+	
+	
+	/* GETTERIT & SETTERIT */
+	
 	public Integer getId() {
 		return id;
 	}

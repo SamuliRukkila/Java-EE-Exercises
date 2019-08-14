@@ -33,11 +33,12 @@ public class Account2 implements Account {
   }
 
   
+  /* Setters and getters for the bean -attributes */
+  
   public String getAccountId() {
     return getId();
   }
   
-  /* Setters and getters for the bean -attributes */
   
   public String getId() {
     return id;

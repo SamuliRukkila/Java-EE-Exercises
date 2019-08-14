@@ -1,6 +1,8 @@
 /*
  Entity-class created from the customer(asiakkaat) -table. It represents the
- struct of that table. This class will contain needed information from the table
+ struct of that table. 
+ 
+ This class will contain needed information from the table
  in order to do ORM -queries (without writing SQL-queries).
 */
 
@@ -28,6 +30,9 @@ import javax.validation.constraints.Size;
 public class Customer implements Serializable {
 
   private static final long serialVersionUID = 1L;
+  
+  
+  /* COLUMNS */
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,8 +66,26 @@ public class Customer implements Serializable {
   private String salasana;
 
   
-  /* GETTERS AND SETTERS FOR VARIABLES */
+  /* CONSTRUCTORS */
   
+  public Customer() {}
+  
+  public Customer(Integer id, @Size(min = 1, max = 50) String nimi, @Size(min = 1, max = 100) String osoite,
+      @Size(min = 1, max = 15) String puhelin, @Size(min = 1, max = 50) String email,
+      @Size(min = 1, max = 15) String salasana) {
+    super();
+    this.id = id;
+    this.nimi = nimi;
+    this.osoite = osoite;
+    this.puhelin = puhelin;
+    this.email = email;
+    this.salasana = salasana;
+  }
+
+
+  /* GETTERS AND SETTERS FOR VARIABLES */
+
+
   public Integer getId() {
     return id;
   }

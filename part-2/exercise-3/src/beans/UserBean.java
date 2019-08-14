@@ -7,7 +7,6 @@
 package beans;
 
 import java.io.Serializable;
-import java.util.Random;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -19,13 +18,15 @@ public class UserBean implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
-  public UserBean() {
-  }
-
   private String username;
   private String password;
   private String ajaxmessage;
   private String notice;
+  
+  public UserBean() {
+    this.ajaxmessage = "";
+    this.notice = "";
+  }
 
   // Injection to DBBean - meaning we can use the functions and 
   // variables in DbBean.
@@ -57,10 +58,11 @@ public class UserBean implements Serializable {
   public String getAjaxmessage() {
     if (username != null) {
       if (!username.isEmpty()) {
+        notice = "";
         ajaxmessage = dbBean.getMessage(username);
       }
     } else {
-      ajaxmessage = null;
+      ajaxmessage = "";
     }
     return ajaxmessage;
   }
